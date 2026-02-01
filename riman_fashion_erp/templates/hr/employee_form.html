@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Add{% endif %} Employee - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h4 class="mb-0">
+                        {% if form.instance.id %}
+                            <i data-feather="edit" class="me-1"></i> Edit Employee: {{ form.instance.full_name }}
+                        {% else %}
+                            <i data-feather="user-plus" class="me-1"></i> Add New Employee
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Employee ID *</label>
+                                {{ form.employee_id }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status *</label>
+                                {{ form.status }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name *</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name *</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email *</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone *</label>
+                                {{ form.phone }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Department</label>
+                                {{ form.department }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Position</label>
+                                {{ form.position }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Gender *</label>
+                                {{ form.gender }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Date of Birth *</label>
+                                {{ form.date_of_birth }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Date Joined *</label>
+                                {{ form.date_joined }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Salary *</label>
+                            {{ form.salary }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Employee Photo</label>
+                            {% if form.instance.photo %}
+                                <div class="mb-2">
+                                    <img src="{{ form.instance.photo.url }}" alt="Employee photo" style="max-width: 150px; border-radius: 8px;">
+                                </div>
+                            {% endif %}
+                            {{ form.photo }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Address *</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">City *</label>
+                                {{ form.city }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Country *</label>
+                                {{ form.country }}
+                            </div>
+                        </div>
+
+                        <!-- Display form errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'hr:employee_list' %}" class="btn btn-secondary">
+                                <i data-feather="x" class="me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save" class="me-1"></i> {% if form.instance.id %}Update{% else %}Add{% endif %} Employee
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #2c3e50;
+        box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.1);
+    }
+</style>
+{% endblock %}

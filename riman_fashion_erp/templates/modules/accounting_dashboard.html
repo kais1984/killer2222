@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Accounting Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i data-feather="bar-chart-2"></i> Accounting Management</h1>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Accounts</h6>
+                    <h3 class="text-primary">{{ total_accounts }}</h3>
+                    <small class="text-muted">Active accounts in chart</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Journal Entries</h6>
+                    <h3 class="text-success">{{ total_entries }}</h3>
+                    <small class="text-muted">Total transactions</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Stock Movements</h6>
+                    <h3 class="text-info">{{ total_movements }}</h3>
+                    <small class="text-muted">Inventory adjustments</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Assets</h6>
+                    <h3 class="text-warning">₨{{ assets_balance|floatformat:2 }}</h3>
+                    <small class="text-muted">Total assets</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Balance Summary -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Balance Summary</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td>Assets:</td>
+                            <td class="text-right"><strong>₨{{ assets_balance|floatformat:2 }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Liabilities:</td>
+                            <td class="text-right"><strong>₨{{ liabilities_balance|floatformat:2 }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Equity:</td>
+                            <td class="text-right"><strong>₨{{ equity_balance|floatformat:2 }}</strong></td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>Net Position:</strong></td>
+                            <td class="text-right"><strong>₨{{ net_position|floatformat:2 }}</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Recent Journal Entries</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_entries %}
+                        <table class="table table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in recent_entries %}
+                                    <tr>
+                                        <td>{{ entry.entry_date|date:"M d, Y" }}</td>
+                                        <td>
+                                            <span class="badge bg-info">{{ entry.entry_type|title }}</span>
+                                        </td>
+                                        <td>{{ entry.description|truncatewords:5 }}</td>
+                                        <td><a href="{% url 'financeaccounting:journal_entry_list' %}">View</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">No journal entries yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <a href="{% url 'financeaccounting:account_list' %}" class="btn btn-primary">
+                    <i data-feather="bar-chart-2" class="me-2"></i> Chart of Accounts
+                </a>
+                <a href="{% url 'financeaccounting:journal_entry_list' %}" class="btn btn-success">
+                    <i data-feather="book" class="me-2"></i> Journal Entries
+                </a>
+                <a href="{% url 'financeaccounting:stock_movement_list' %}" class="btn btn-info">
+                    <i data-feather="package" class="me-2"></i> Stock Movements
+                </a>
+                <a href="{% url 'financeaccounting:account_create' %}" class="btn btn-warning">
+                    <i data-feather="plus" class="me-2"></i> New Account
+                </a>
+                <a href="{% url 'financeaccounting:stock_movement_create' %}" class="btn btn-secondary">
+                    <i data-feather="plus" class="me-2"></i> Record Movement
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

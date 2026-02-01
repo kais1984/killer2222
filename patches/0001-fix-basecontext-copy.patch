@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: riman-fix <noreply@example.com>
+Date: Thu, 29 Jan 2026 13:00:00 +0000
+Subject: [PATCH] Fix BaseContext.__copy__ to avoid AttributeError when copying contexts
+
+---
+ django/template/context.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/django/template/context.py b/django/template/context.py
+index 0000000..1111111 100644
+--- a/django/template/context.py
++++ b/django/template/context.py
+@@
+     def __copy__(self):
+-        duplicate = copy(super())
+-        duplicate.dicts = self.dicts[:]
+-        return duplicate
++        # Create a safe shallow copy of the context instance. Using copy(super())
++        # is incorrect because `super()` returns a proxy rather than an
++        # instance; copying that can raise AttributeError in some environments.
++        duplicate = self.__class__.__new__(self.__class__)
++        duplicate.__dict__ = self.__dict__.copy()
++        duplicate.dicts = self.dicts[:]
++        return duplicate
+-- 
+2.42.0

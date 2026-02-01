@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Invoices - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Invoices</h1>
+            <p class="text-muted"><small>Invoices are auto-generated when a sale is created. No manual invoice creation needed.</small></p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'sale_list' %}" class="btn btn-primary">
+                <i data-feather="plus"></i> Create Sale
+            </a>
+        </div>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Invoice #</th>
+                <th>Client</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.invoice_number }}</td>
+                <td>{{ invoice.client.name }}</td>
+                <td>${{ invoice.total_amount }}</td>
+                <td><span class="badge bg-info">{{ invoice.status }}</span></td>
+                <td><span class="badge bg-warning">{{ invoice.payment_status }}</span></td>
+                <td>{{ invoice.invoice_date|date:"M d, Y" }}</td>
+                <td>
+                    <a href="/reports/invoice/{{ invoice.id }}/pdf/" class="btn btn-sm btn-outline-primary" title="Print"><i data-feather="printer"></i></a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary" title="Download"><i data-feather="download"></i></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-center">No invoices found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

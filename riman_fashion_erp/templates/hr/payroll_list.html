@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Payroll Management - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5"><i data-feather="dollar-sign" class="me-2"></i> Payroll Records</h1>
+            <p class="text-muted">Salary processing and payment history</p>
+        </div>
+        <a href="{% url 'hr:payroll_add' %}" class="btn btn-primary btn-lg">
+            <i data-feather="plus" class="me-2"></i> Process Payroll
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Period</th>
+                        <th>Base Salary</th>
+                        <th>Bonus</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Paid Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in payroll_records %}
+                    <tr>
+                        <td><strong>{{ record.employee.full_name }}</strong></td>
+                        <td>{{ record.period_start|date:"M d" }} - {{ record.period_end|date:"M d, Y" }}</td>
+                        <td>${{ record.base_salary|floatformat:2 }}</td>
+                        <td class="text-success">+${{ record.bonus|floatformat:2 }}</td>
+                        <td class="text-danger">-${{ record.deductions|floatformat:2 }}</td>
+                        <td><strong>${{ record.net_salary|floatformat:2 }}</strong></td>
+                        <td>{{ record.paid_at|date:"M d, Y"|default:"Pending" }}</td>
+                        <td>
+                            <a href="{% url 'hr:payroll_edit' record.id %}" class="btn btn-sm btn-outline-primary">
+                                <i data-feather="edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-5">No payroll records</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

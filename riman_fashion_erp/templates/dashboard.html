@@ -1,0 +1,900 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Page Header -->
+    <div class="dashboard-header mb-4">
+        <div>
+            <h1 class="dashboard-title">
+                <i data-feather="bar-chart-2"></i> Dashboard
+            </h1>
+            <p class="dashboard-subtitle">Welcome back — here's your business overview at a glance</p>
+        </div>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid mb-5">
+        <!-- KPI 1: Total Sales -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+                    <i data-feather="shopping-cart"></i>
+                </div>
+                <span class="kpi-badge positive">+12.5%</span>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value">2,543</div>
+                <div class="kpi-label">Total Sales</div>
+                <div class="kpi-helper">vs last month</div>
+            </div>
+        </div>
+
+        <!-- KPI 2: Revenue -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #059669, #047857);">
+                    <i data-feather="dollar-sign"></i>
+                </div>
+                <span class="kpi-badge positive">+8.3%</span>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value">$45.2K</div>
+                <div class="kpi-label">Revenue</div>
+                <div class="kpi-helper">This month</div>
+            </div>
+        </div>
+
+        <!-- KPI 3: Inventory -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                    <i data-feather="package"></i>
+                </div>
+                <span class="kpi-badge">Healthy</span>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value">1,892</div>
+                <div class="kpi-label">Items in Stock</div>
+                <div class="kpi-helper">Ready to ship</div>
+            </div>
+        </div>
+
+        <!-- KPI 4: Active Clients -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon-wrapper" style="background: linear-gradient(135deg, #0891b2, #0d9488);">
+                    <i data-feather="users"></i>
+                </div>
+                <span class="kpi-badge positive">+5 new</span>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value">342</div>
+                <div class="kpi-label">Active Clients</div>
+                <div class="kpi-helper">This week</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Operations -->
+    <div class="operations-grid mb-5">
+        <!-- Sales Operations -->
+        <div class="operation-card">
+            <div class="operation-header" style="border-left: 4px solid #2563eb;">
+                <i data-feather="shopping-cart"></i>
+                <h3>Sales Operations</h3>
+            </div>
+            <div class="operation-items">
+                <a href="/sales/invoices/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #dbeafe;">
+                        <i data-feather="file-text" style="color: #2563eb;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Create Invoice</div>
+                        <div class="operation-desc">Generate new sales invoice</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/sales/orders/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #dcfce7;">
+                        <i data-feather="list" style="color: #059669;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Create Order</div>
+                        <div class="operation-desc">Add new customer order</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/sales/invoices/" class="operation-item">
+                    <div class="operation-icon" style="background: #ecf9ff;">
+                        <i data-feather="eye" style="color: #0891b2;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">View Invoices</div>
+                        <div class="operation-desc">2,543 total invoices</div>
+                    </div>
+                    <span class="operation-badge">2.5K</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Inventory Management -->
+        <div class="operation-card">
+            <div class="operation-header" style="border-left: 4px solid #6366f1;">
+                <i data-feather="package"></i>
+                <h3>Inventory Management</h3>
+            </div>
+            <div class="operation-items">
+                <a href="/inventory/products/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #fef3c7;">
+                        <i data-feather="plus-circle" style="color: #d97706;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Add Product</div>
+                        <div class="operation-desc">Create new fashion item</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/inventory/warehouses/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #fecaca;">
+                        <i data-feather="building" style="color: #dc2626;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Add Warehouse</div>
+                        <div class="operation-desc">Register storage location</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/inventory/products/" class="operation-item">
+                    <div class="operation-icon" style="background: #e9d5ff;">
+                        <i data-feather="database" style="color: #9333ea;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">View Stock</div>
+                        <div class="operation-desc">1,892 items stocked</div>
+                    </div>
+                    <span class="operation-badge">1.9K</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- CRM -->
+        <div class="operation-card">
+            <div class="operation-header" style="border-left: 4px solid #059669;">
+                <i data-feather="users"></i>
+                <h3>Customer Relations</h3>
+            </div>
+            <div class="operation-items">
+                <a href="/crm/clients/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #f0fdf4;">
+                        <i data-feather="user-plus" style="color: #059669;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Add Client</div>
+                        <div class="operation-desc">Register new customer</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/crm/contacts/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #f5f3ff;">
+                        <i data-feather="message-circle" style="color: #7c3aed;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Log Interaction</div>
+                        <div class="operation-desc">Record client contact</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/crm/clients/" class="operation-item">
+                    <div class="operation-icon" style="background: #ecfdf5;">
+                        <i data-feather="users" style="color: #0d9488;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">View Clients</div>
+                        <div class="operation-desc">342 active clients</div>
+                    </div>
+                    <span class="operation-badge">342</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Finance -->
+        <div class="operation-card">
+            <div class="operation-header" style="border-left: 4px solid #0891b2;">
+                <i data-feather="bar-chart-2"></i>
+                <h3>Accounting & Finance</h3>
+            </div>
+            <div class="operation-items">
+                <a href="/accounting/accounts/add/" class="operation-item">
+                    <div class="operation-icon" style="background: #cffafe;">
+                        <i data-feather="plus" style="color: #0891b2;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Add Account</div>
+                        <div class="operation-desc">Create new account</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/accounting/journal-entries/" class="operation-item">
+                    <div class="operation-icon" style="background: #f3e8ff;">
+                        <i data-feather="file-text" style="color: #a855f7;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Journal Entries</div>
+                        <div class="operation-desc">Record transactions</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+                <a href="/accounting/accounts/" class="operation-item">
+                    <div class="operation-icon" style="background: #fef3c7;">
+                        <i data-feather="book" style="color: #ca8a04;"></i>
+                    </div>
+                    <div class="operation-info">
+                        <div class="operation-name">Chart of Accounts</div>
+                        <div class="operation-desc">View all accounts</div>
+                    </div>
+                    <i data-feather="arrow-right" style="color: #9ca3af;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supply Chain Section -->
+    <div class="supply-chain-grid mb-5">
+        <!-- Rentals -->
+        <div class="supply-card">
+            <div class="supply-header" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                <i data-feather="calendar"></i>
+                <h3>Rental Management</h3>
+            </div>
+            <div class="supply-body">
+                <a href="/rentals/add/" class="supply-item">
+                    <span>Create New Rental</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+                <a href="/rentals/" class="supply-item">
+                    <span>View All Rentals</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Suppliers -->
+        <div class="supply-card">
+            <div class="supply-header" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <i data-feather="truck"></i>
+                <h3>Supplier Management</h3>
+            </div>
+            <div class="supply-body">
+                <a href="/suppliers/add/" class="supply-item">
+                    <span>Add New Supplier</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+                <a href="/suppliers/orders/add/" class="supply-item">
+                    <span>Create Purchase Order</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Documents -->
+        <div class="supply-card">
+            <div class="supply-header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <i data-feather="file-text"></i>
+                <h3>Documents & Contracts</h3>
+            </div>
+            <div class="supply-body">
+                <a href="{% url 'contracts_list' %}" class="supply-item">
+                    <span>Download Contracts</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+                <a href="{% url 'template_library' %}" class="supply-item">
+                    <span>Template Library</span>
+                    <i data-feather="arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions-section mb-5">
+        <div class="quick-actions-header">
+            <h2 class="quick-actions-title">
+                <i data-feather="zap"></i> Quick Actions
+            </h2>
+            <p class="quick-actions-subtitle">Fast access to common tasks</p>
+        </div>
+        <div class="quick-actions-grid">
+            <a href="/sales/invoices/add/" class="quick-action-btn" style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+                <i data-feather="file-text"></i>
+                <span>Invoice</span>
+            </a>
+            <a href="/inventory/products/add/" class="quick-action-btn" style="background: linear-gradient(135deg, #059669, #047857);">
+                <i data-feather="plus-circle"></i>
+                <span>Product</span>
+            </a>
+            <a href="/crm/clients/add/" class="quick-action-btn" style="background: linear-gradient(135deg, #0891b2, #0d9488);">
+                <i data-feather="user-plus"></i>
+                <span>Client</span>
+            </a>
+            <a href="/suppliers/add/" class="quick-action-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <i data-feather="truck"></i>
+                <span>Supplier</span>
+            </a>
+            <a href="/accounting/accounts/" class="quick-action-btn" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <i data-feather="book-open"></i>
+                <span>Account</span>
+            </a>
+            <a href="/reports/" class="quick-action-btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i data-feather="bar-chart-2"></i>
+                <span>Reports</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="system-status">
+        <div class="status-content">
+            <div class="status-message">
+                <i data-feather="check-circle" style="color: #10b981;"></i>
+                <div>
+                    <strong>All Systems Operational</strong>
+                    <p>Your ERP system is running smoothly</p>
+                </div>
+            </div>
+            <div class="status-time" id="current-time"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Header */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 2rem 0;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .dashboard-subtitle {
+        color: #6b7280;
+        margin: 0.5rem 0 0;
+        font-size: 0.95rem;
+    }
+
+    .dark-mode .dashboard-header {
+        border-bottom-color: #334155;
+    }
+
+    .dark-mode .dashboard-title {
+        color: var(--dark-text-primary);
+    }
+
+    .dark-mode .dashboard-subtitle {
+        color: var(--dark-text-secondary);
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .kpi-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .kpi-card:hover {
+        border-color: #d1d5db;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .kpi-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .kpi-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .kpi-icon-wrapper i[data-feather] {
+        width: 24px;
+        height: 24px;
+    }
+
+    .kpi-badge {
+        background: #f3f4f6;
+        color: #6b7280;
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .kpi-badge.positive {
+        background: #ecfdf5;
+        color: #10b981;
+    }
+
+    .kpi-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+    }
+
+    .kpi-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .kpi-helper {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-top: 0.5rem;
+    }
+
+    .dark-mode .kpi-card {
+        background: var(--dark-bg-secondary);
+        border-color: var(--dark-border);
+    }
+
+    .dark-mode .kpi-card:hover {
+        border-color: rgba(79, 140, 255, 0.5);
+    }
+
+    .dark-mode .kpi-value {
+        color: var(--dark-text-primary);
+    }
+
+    .dark-mode .kpi-label {
+        color: var(--dark-text-secondary);
+    }
+
+    .dark-mode .kpi-helper {
+        color: #64748b;
+    }
+
+    .dark-mode .kpi-badge {
+        background: rgba(79, 140, 255, 0.1);
+        color: var(--dark-text-secondary);
+    }
+
+    .dark-mode .kpi-badge.positive {
+        background: rgba(0, 208, 132, 0.1);
+        color: #00d084;
+    }
+
+    /* Operations Grid */
+    .operations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .operation-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+
+    .operation-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .operation-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1.25rem;
+        background: linear-gradient(135deg, #f8fafb, #f3f5f7);
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .operation-header i[data-feather] {
+        width: 24px;
+        height: 24px;
+        color: #6b7280;
+    }
+
+    .operation-header h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .operation-items {
+        padding: 0;
+    }
+
+    .operation-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #e5e7eb;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .operation-item:last-child {
+        border-bottom: none;
+    }
+
+    .operation-item:hover {
+        background: #f9fafb;
+    }
+
+    .operation-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .operation-icon i[data-feather] {
+        width: 20px;
+        height: 20px;
+    }
+
+    .operation-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .operation-name {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+    }
+
+    .operation-desc {
+        font-size: 0.8rem;
+        color: #9ca3af;
+    }
+
+    .operation-badge {
+        background: #f3f4f6;
+        color: #4b5563;
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .dark-mode .operation-card {
+        background: var(--dark-bg-secondary);
+        border-color: var(--dark-border);
+    }
+
+    .dark-mode .operation-header {
+        background: var(--dark-bg-tertiary);
+        border-bottom-color: var(--dark-border);
+    }
+
+    .dark-mode .operation-header h3 {
+        color: var(--dark-text-primary);
+    }
+
+    .dark-mode .operation-item {
+        border-bottom-color: var(--dark-border);
+    }
+
+    .dark-mode .operation-item:hover {
+        background: rgba(79, 140, 255, 0.1);
+    }
+
+    .dark-mode .operation-name {
+        color: var(--dark-text-primary);
+    }
+
+    .dark-mode .operation-desc {
+        color: var(--dark-text-secondary);
+    }
+
+    /* Supply Chain Section */
+    .supply-chain-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .supply-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+
+    .supply-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .supply-header {
+        padding: 1.5rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .supply-header i[data-feather] {
+        width: 24px;
+        height: 24px;
+    }
+
+    .supply-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .supply-body {
+        background: #ffffff;
+        padding: 0;
+    }
+
+    .supply-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        text-decoration: none;
+        color: #1f2937;
+        transition: all 0.2s ease;
+    }
+
+    .supply-item:last-child {
+        border-bottom: none;
+    }
+
+    .supply-item:hover {
+        background: #f9fafb;
+        gap: 0.5rem;
+    }
+
+    .supply-item i[data-feather] {
+        width: 18px;
+        height: 18px;
+        color: #9ca3af;
+        flex-shrink: 0;
+    }
+
+    .dark-mode .supply-body {
+        background: var(--dark-bg-secondary);
+    }
+
+    .dark-mode .supply-item {
+        color: var(--dark-text-primary);
+        border-bottom-color: var(--dark-border);
+    }
+
+    .dark-mode .supply-item:hover {
+        background: rgba(79, 140, 255, 0.1);
+    }
+
+    /* Quick Actions */
+    .quick-actions-section {
+        background: linear-gradient(135deg, #f8fafb 0%, #f3f5f7 100%);
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 2rem;
+    }
+
+    .quick-actions-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .quick-actions-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+
+    .quick-actions-title i[data-feather] {
+        width: 24px;
+        height: 24px;
+    }
+
+    .quick-actions-subtitle {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin: 0.5rem 0 0;
+    }
+
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+    }
+
+    .quick-action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1.5rem 1rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .quick-action-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .quick-action-btn i[data-feather] {
+        width: 28px;
+        height: 28px;
+    }
+
+    .dark-mode .quick-actions-section {
+        background: var(--dark-bg-secondary);
+        border-color: var(--dark-border);
+    }
+
+    .dark-mode .quick-actions-title {
+        color: var(--dark-text-primary);
+    }
+
+    .dark-mode .quick-actions-subtitle {
+        color: var(--dark-text-secondary);
+    }
+
+    /* System Status */
+    .system-status {
+        background: #f0fdf4;
+        border: 1px solid #d1fae5;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .status-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status-message {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .status-message i[data-feather] {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+
+    .status-message strong {
+        color: #047857;
+        font-weight: 600;
+    }
+
+    .status-message p {
+        color: #059669;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .status-time {
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .dark-mode .system-status {
+        background: rgba(0, 208, 132, 0.1);
+        border-color: rgba(0, 208, 132, 0.3);
+    }
+
+    .dark-mode .status-message strong,
+    .dark-mode .status-message p {
+        color: #00d084;
+    }
+
+    .dark-mode .status-time {
+        color: var(--dark-text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .kpi-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-actions-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .status-content {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+
+<script>
+    // Update current time
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateTime);
+    setInterval(updateTime, 60000);
+</script>
+{% endblock %}

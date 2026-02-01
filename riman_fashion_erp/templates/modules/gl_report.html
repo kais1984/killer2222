@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}General Ledger Report - RIAMAN Fashion ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1><i data-feather="book" class="me-2"></i> General Ledger Report</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'gl_report_pdf' %}?date_from={{ date_from }}&date_to={{ date_to }}" class="btn btn-danger">
+                <i data-feather="file" class="me-2"></i> PDF
+            </a>
+            <a href="{% url 'gl_excel' %}?date_from={{ date_from }}&date_to={{ date_to }}" class="btn btn-success">
+                <i data-feather="file" class="me-2"></i> Excel
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="date_from" class="form-label">From Date</label>
+                            <input type="date" id="date_from" name="date_from" class="form-control" value="{{ date_from }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="date_to" class="form-label">To Date</label>
+                            <input type="date" id="date_to" name="date_to" class="form-control" value="{{ date_to }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i data-feather="search" class="me-2"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Debits</h6>
+                    <h3 class="text-primary">${{ total_debits|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Credits</h6>
+                    <h3 class="text-success">${{ total_credits|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Entries</h6>
+                    <h3 class="text-info">{{ entries|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Balanced</h6>
+                    {% if is_balanced %}
+                    <h3 class="text-success"><i data-feather="check" class="me-2"></i> Yes</h3>
+                    {% else %}
+                    <h3 class="text-danger"><i data-feather="x" class="me-2"></i> No</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Account Balances -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="balance-scale" class="me-2"></i> Account Balances
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Account</th>
+                                    <th class="text-end">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for account, balance in account_balances.items %}
+                                <tr>
+                                    <td>{{ account }}</td>
+                                    <td class="text-end">
+                                        {% if balance >= 0 %}
+                                        <span class="text-success">${{ balance|floatformat:2 }}</span>
+                                        {% else %}
+                                        <span class="text-danger">${{ balance|floatformat:2 }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">No accounts found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Journal Entries -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="edit" class="me-2"></i> Journal Entries
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Entry #</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Balanced</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in entries %}
+                                <tr>
+                                    <td><strong>{{ entry.journal_number }}</strong></td>
+                                    <td>{{ entry.entry_date|date:"m/d/Y" }}</td>
+                                    <td>{{ entry.description|truncatewords:10 }}</td>
+                                    <td><span class="badge bg-info">{{ entry.entry_type }}</span></td>
+                                    <td>
+                                        {% if entry.status == 'posted' %}
+                                        <span class="badge bg-success">Posted</span>
+                                        {% elif entry.status == 'draft' %}
+                                        <span class="badge bg-warning">Draft</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">{{ entry.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if entry.is_balanced %}
+                                        <span class="badge bg-success">Yes</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">No</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">No journal entries found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

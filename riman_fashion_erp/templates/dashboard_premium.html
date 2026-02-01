@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="page-transition">
+    <!-- Page Header -->
+    <div class="page-header mb-5">
+        <h1>
+            <i data-feather="bar-chart-2"></i> Dashboard
+        </h1>
+        <p>Welcome back — here's your business overview at a glance</p>
+    </div>
+
+    <!-- KPI Statistics Grid -->
+    <div class="kpi-grid mb-5">
+        <!-- Total Sales KPI -->
+        <div class="kpi-card hover-lift">
+            <div class="kpi-icon">
+                <i data-feather="shopping-cart"></i>
+            </div>
+            <div class="kpi-value">2,543</div>
+            <div class="kpi-label">Total Sales</div>
+            <div class="kpi-change positive">
+                <i data-feather="trending-up" style="width: 14px; height: 14px; margin-right: 4px; vertical-align: text-bottom;"></i>
+                <strong>12.5%</strong> vs last month
+            </div>
+        </div>
+
+        <!-- Monthly Revenue KPI -->
+        <div class="kpi-card hover-lift">
+            <div class="kpi-icon" style="background: linear-gradient(135deg, #4f8cff, #2c5aa0);">
+                <i data-feather="dollar-sign" style="color: white;"></i>
+            </div>
+            <div class="kpi-value" style="color: #4f8cff;">$45.2K</div>
+            <div class="kpi-label">Revenue (This Month)</div>
+            <div class="kpi-change positive">
+                <i data-feather="trending-up" style="width: 14px; height: 14px; margin-right: 4px; vertical-align: text-bottom;"></i>
+                <strong>8.3%</strong> growth
+            </div>
+        </div>
+
+        <!-- Items in Stock KPI -->
+        <div class="kpi-card hover-lift">
+            <div class="kpi-icon" style="background: var(--success-soft);">
+                <i data-feather="package" style="color: var(--success);"></i>
+            </div>
+            <div class="kpi-value" style="color: var(--success);">1,892</div>
+            <div class="kpi-label">Items in Stock</div>
+            <div class="kpi-change positive">
+                <i data-feather="trending-up" style="width: 14px; height: 14px; margin-right: 4px; vertical-align: text-bottom;"></i>
+                Healthy inventory
+            </div>
+        </div>
+
+        <!-- Active Clients KPI -->
+        <div class="kpi-card hover-lift">
+            <div class="kpi-icon" style="background: var(--info-soft);">
+                <i data-feather="users" style="color: var(--info);"></i>
+            </div>
+            <div class="kpi-value" style="color: var(--info);">342</div>
+            <div class="kpi-label">Active Clients</div>
+            <div class="kpi-change positive">
+                <i data-feather="trending-up" style="width: 14px; height: 14px; margin-right: 4px; vertical-align: text-bottom;"></i>
+                <strong>5</strong> new this week
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="row mb-4">
+        <!-- Sales Operations -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="shopping-cart"></i> Sales Operations
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/sales/invoices/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="file-text" style="vertical-align: middle; margin-right: 8px;"></i>
+                                        Create Invoice
+                                    </h6>
+                                    <small class="text-muted">Generate new sales invoice</small>
+                                </div>
+                                <i data-feather="chevron-right" style="color: var(--primary-600);"></i>
+                            </div>
+                        </a>
+                        <a href="/sales/orders/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="list" style="vertical-align: middle; margin-right: 8px; color: var(--success);"></i>
+                                        Create Order
+                                    </h6>
+                                    <small class="text-muted">Add new customer order</small>
+                                </div>
+                                <i data-feather="chevron-right" style="color: var(--primary-600);"></i>
+                            </div>
+                        </a>
+                        <a href="/sales/invoices/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="eye" style="vertical-align: middle; margin-right: 8px; color: var(--info);"></i>
+                                        View Invoices
+                                    </h6>
+                                    <small class="text-muted">2,543 total invoices</small>
+                                </div>
+                                <span class="badge badge-primary">2.5K</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Management -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="package"></i> Inventory Management
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/inventory/products/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="plus-circle" style="vertical-align: middle; margin-right: 8px; color: var(--warning);"></i>
+                                        Add Product
+                                    </h6>
+                                    <small class="text-muted">Create new fashion item</small>
+                                </div>
+                                <i data-feather="chevron-right" style="color: var(--primary-600);"></i>
+                            </div>
+                        </a>
+                        <a href="/inventory/warehouses/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="building" style="vertical-align: middle; margin-right: 8px; color: var(--danger);"></i>
+                                        Add Warehouse
+                                    </h6>
+                                    <small class="text-muted">Register storage location</small>
+                                </div>
+                                <i data-feather="chevron-right" style="color: var(--primary-600);"></i>
+                            </div>
+                        </a>
+                        <a href="/inventory/products/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i data-feather="database" style="vertical-align: middle; margin-right: 8px; color: var(--secondary);"></i>
+                                        View Stock
+                                    </h6>
+                                    <small class="text-muted">1,892 items currently stocked</small>
+                                </div>
+                                <span class="badge badge-success">1.9K</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Operations -->
+    <div class="row">
+        <!-- CRM & Clients -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="users"></i> Customer Relationship
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/crm/clients/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="user-plus" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Add Client
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/crm/contacts/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="message-circle" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Log Interaction
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/crm/clients/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="users" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    View Clients
+                                </span>
+                                <span class="badge badge-primary">342</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounting & Finance -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="bar-chart-2"></i> Accounting & Finance
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/accounting/journal-entries/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="book" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Journal Entry
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/accounting/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="briefcase" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    View Accounts
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/reports/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="trending-up" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Financial Reports
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HR & Rentals -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="briefcase"></i> HR & Operations
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/hr/employees/add/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="user" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Add Employee
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/rentals/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="calendar" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    View Rentals
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/company-settings/" class="list-group-item hover-lift">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i data-feather="settings" style="margin-right: 8px; vertical-align: middle;"></i>
+                                    Settings
+                                </span>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i data-feather="activity"></i> Quick Summary
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="stat-minimal">
+                                <div class="stat-minimal-value">78.5%</div>
+                                <div class="stat-minimal-label">Conversion Rate</div>
+                                <small class="text-success d-block mt-2">
+                                    <i data-feather="trending-up" style="width: 14px; height: 14px; vertical-align: text-bottom;"></i>
+                                    Up 5% this month
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-minimal">
+                                <div class="stat-minimal-value">$89K</div>
+                                <div class="stat-minimal-label">Average Order Value</div>
+                                <small class="text-success d-block mt-2">
+                                    <i data-feather="trending-up" style="width: 14px; height: 14px; vertical-align: text-bottom;"></i>
+                                    Strong performance
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-minimal">
+                                <div class="stat-minimal-value">94.2%</div>
+                                <div class="stat-minimal-label">Inventory Accuracy</div>
+                                <small class="text-success d-block mt-2">
+                                    Excellent condition
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-minimal">
+                                <div class="stat-minimal-value">2.4 days</div>
+                                <div class="stat-minimal-label">Avg Fulfillment Time</div>
+                                <small class="text-success d-block mt-2">
+                                    <i data-feather="trending-down" style="width: 14px; height: 14px; vertical-align: text-bottom;"></i>
+                                    Improved
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .list-group-item {
+        border: 1px solid var(--gray-200) !important;
+        margin-bottom: var(--space-md) !important;
+        padding: var(--space-lg) !important;
+        border-radius: var(--radius-md) !important;
+        background: #ffffff !important;
+    }
+    
+    .list-group-item:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    .list-group-item h6 {
+        margin-bottom: var(--space-sm);
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

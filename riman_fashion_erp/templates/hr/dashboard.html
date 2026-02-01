@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}HR Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="mb-4">
+        <h1 class="display-5"><i data-feather="users" class="me-2"></i> Human Resources</h1>
+        <p class="text-muted">Employee management, payroll, attendance tracking</p>
+    </div>
+
+    <!-- HR KPIs -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Total Employees</p>
+                            <h3 class="display-6 mb-0">{{ total_employees }}</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; opacity: 0.2;"><i data-feather="users"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Departments</p>
+                            <h3 class="display-6 mb-0">{{ total_departments }}</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; opacity: 0.2; color: #3498db;"><i data-feather="building"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Pending Leave Requests</p>
+                            <h3 class="display-6 mb-0" style="color: #e67e22;">{{ pending_leaves }}</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; opacity: 0.2; color: #e67e22;"><i data-feather="calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Recent Hires</p>
+                            <h3 class="display-6 mb-0" style="color: #27ae60;">{{ recent_employees|length }}</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; opacity: 0.2; color: #27ae60;"><i data-feather="user-check"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HR Operations -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="user" class="me-2"></i> Employee Management
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'hr:employee_add' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="user-plus" class="text-success me-2"></i> Add Employee
+                                    <small class="text-muted">Register new staff member</small>
+                                </div>
+                                <span class="badge bg-success">+</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:employee_list' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="list" class="text-info me-2"></i> View All Employees
+                                    <small class="text-muted">{{ total_employees }} active employees</small>
+                                </div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:department_list' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="building" class="text-primary me-2"></i> Departments</h6>
+                                    <small class="text-muted">Organize staff by department</small>
+                                </div>
+                                <span class="badge bg-primary">{{ total_departments }}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="clock" class="me-2"></i> Time & Attendance
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'hr:attendance_add' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="check-circle" class="text-success me-2"></i> Record Attendance</h6>
+                                    <small class="text-muted">Mark employee presence</small>
+                                </div>
+                                <span class="badge bg-success">+</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:attendance_list' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="clock" class="text-info me-2"></i> View Attendance</h6>
+                                    <small class="text-muted">Attendance records</small>
+                                </div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payroll & Leave -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="dollar-sign" class="me-2"></i> Payroll Management
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'hr:payroll_add' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="plus" class="text-warning me-2"></i> Process Payroll</h6>
+                                    <small class="text-muted">Calculate and record salaries</small>
+                                </div>
+                                <span class="badge bg-warning text-dark">+</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:payroll_list' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="file-text" class="text-info me-2"></i> Payroll Records</h6>
+                                    <small class="text-muted">View salary history</small>
+                                </div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="calendar" class="me-2"></i> Leave Management
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'hr:leave_add' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="plus" class="text-danger me-2"></i> Request Leave</h6>
+                                    <small class="text-muted">Submit new leave request</small>
+                                </div>
+                                <span class="badge bg-danger">+</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:leave_list' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="list" class="text-danger me-2"></i> Leave Requests</h6>
+                                    <small class="text-muted">{{ pending_leaves }} pending approval</small>
+                                </div>
+                                <span class="badge bg-danger">{{ pending_leaves }}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Reviews -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="star" class="me-2"></i> Performance Management
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{% url 'hr:performance_add' %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="mb-1"><i data-feather="plus" class="me-2"></i> Create Performance Review</h6>
+                                    <small>Evaluate employee performance</small>
+                                </div>
+                                <span class="badge bg-primary">+</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'hr:performance_list' %}" class="list-group-item list-group-item-action">
+                            <h6 class="mb-0"><i data-feather="eye" class="me-2"></i> View All Reviews</h6>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Employees -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <i data-feather="user-check" class="me-2"></i> Recently Added Employees
+                </div>
+                <div class="card-body">
+                    {% if recent_employees %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Employee ID</th>
+                                    <th>Department</th>
+                                    <th>Position</th>
+                                    <th>Joined</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for emp in recent_employees %}
+                                <tr>
+                                    <td>{{ emp.full_name }}</td>
+                                    <td><span class="badge bg-light text-dark">{{ emp.employee_id }}</span></td>
+                                    <td>{{ emp.department.name|default:"N/A" }}</td>
+                                    <td>{{ emp.position.title|default:"N/A" }}</td>
+                                    <td>{{ emp.date_joined|date:"M d, Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'hr:employee_detail' emp.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i data-feather="eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center py-4">No employees added yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

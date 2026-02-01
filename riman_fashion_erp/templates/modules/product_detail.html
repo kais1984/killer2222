@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - RIMAN ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <div class="row">
+        <!-- Image Gallery Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i data-feather="image" class="me-2"></i> Product Gallery</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Main Image Display -->
+                    {% if images %}
+                        <div class="mb-4">
+                            <img id="mainImage" src="{{ images.0.image.url }}" alt="{{ images.0.alt_text }}" class="img-fluid rounded w-100" style="max-height: 450px; object-fit: cover;">
+                        </div>
+                        
+                        <!-- Thumbnail Gallery -->
+                        <div class="row g-2 mb-4">
+                            {% for image in images %}
+                                <div class="col-3">
+                                    <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="img-thumbnail cursor-pointer rounded" style="cursor: pointer; height: 80px; object-fit: cover; width: 100%;" onclick="changeMainImage('{{ image.image.url }}')">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-4">
+                            <i data-feather="info" class="me-2"></i> No images uploaded yet. Add photos below!
+                        </div>
+                    {% endif %}
+
+                    <!-- Photo Upload Section -->
+                    <div class="card bg-light border-1">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i data-feather="upload-cloud" class="me-2"></i> Upload Product Photos</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'product_upload_image' product.id %}" enctype="multipart/form-data" class="needs-validation">
+                                {% csrf_token %}
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Select Image File *</label>
+                                    <input type="file" name="image" class="form-control" accept="image/*" required>
+                                    <small class="text-muted">Accepted formats: JPG, PNG, GIF, WebP</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Image Description</label>
+                                    <input type="text" name="alt_text" class="form-control" placeholder="e.g., Front view of wedding dress">
+                                    <small class="text-muted">Helps with search and accessibility</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Display Order</label>
+                                    <input type="number" name="order" class="form-control" value="0" min="0">
+                                    <small class="text-muted">Lower numbers appear first (0 = first)</small>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" name="is_primary" class="form-check-input" id="isPrimary">
+                                    <label class="form-check-label fw-bold" for="isPrimary">
+                                        Set as primary image <i data-feather="star" class="text-warning"></i>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i data-feather="upload" class="me-1"></i> Upload Photo
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i data-feather="box" class="me-2"></i> {{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Basic Info -->
+                    <div class="mb-4">
+                        <span class="badge bg-secondary me-2">SKU: {{ product.sku }}</span>
+                        <span class="badge bg-info">{{ product.get_dress_type_display }}</span>
+                    </div>
+
+                    <p class="text-muted mb-3">{{ product.description }}</p>
+
+                    <!-- Product Attributes -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <strong>Category:</strong><br>
+                            {{ product.category.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Size:</strong><br>
+                            {{ product.get_size_display }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <strong>Color:</strong><br>
+                            {{ product.get_color_display }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Material:</strong><br>
+                            {{ product.material }}
+                        </div>
+                    </div>
+
+                    <!-- Availability & Stock -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <strong>Availability:</strong><br>
+                            {% if product.availability == 'sale' %}
+                                <span class="badge bg-success">For Sale</span>
+                            {% elif product.availability == 'rental' %}
+                                <span class="badge bg-info">For Rental</span>
+                            {% else %}
+                                <span class="badge bg-warning">Sale & Rental</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Stock Level:</strong><br>
+                            <span class="h5 text-primary">{{ product.quantity_in_stock }} units</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Pricing -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <small class="text-muted d-block">Cost Price</small>
+                                <h6 class="text-danger mb-0">${{ product.cost_price }}</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <small class="text-muted d-block">Sale Price</small>
+                                <h6 class="text-success mb-0">${{ product.sale_price }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if product.rental_price_per_day %}
+                    <div class="p-3 bg-light rounded mb-4">
+                        <small class="text-muted d-block">Rental Price per Day</small>
+                        <h6 class="text-info mb-0">${{ product.rental_price_per_day }}</h6>
+                    </div>
+                    {% endif %}
+
+                    <hr>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'product_edit' product.id %}" class="btn btn-warning flex-grow-1">
+                            <i data-feather="edit" class="me-1"></i> Edit Product
+                        </a>
+                        <a href="{% url 'product_list' %}" class="btn btn-secondary flex-grow-1">
+                            <i data-feather="arrow-left" class="me-1"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function changeMainImage(url) {
+    document.getElementById('mainImage').src = url;
+}
+</script>
+
+<style>
+    .cursor-pointer { cursor: pointer; }
+    .img-thumbnail { border: 2px solid #ddd; transition: all 0.3s ease; }
+    .img-thumbnail:hover { border-color: #2c3e50; transform: scale(1.05); }
+</style>
+{% endblock %}

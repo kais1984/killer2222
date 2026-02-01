@@ -1,0 +1,43 @@
+name: ClamAV Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  clamav-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r riman_fashion_erp/requirements.txt
+        pip install clamd
+
+    - name: Install ClamAV
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clamav clamav-daemon
+        sudo systemctl stop clamav-freshclam || true
+        sudo freshclam || true
+        sudo systemctl start clamav-daemon || true
+
+    - name: Run quick ClamAV scan on repository
+      run: |
+        clamscan -r --infected --no-summary || true
+
+    - name: Run Django tests
+      run: |
+        cd riman_fashion_erp
+        python manage.py test --verbosity=2

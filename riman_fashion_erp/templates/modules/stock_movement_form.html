@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Record Stock Movement - RIMAN ERP{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i data-feather="package" class="me-2"></i> Record Stock Movement</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ form.product.id_for_label }}">Product *</label>
+                                    {{ form.product }}
+                                    {% if form.product.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.product.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ form.movement_type.id_for_label }}">Movement Type *</label>
+                                    {{ form.movement_type }}
+                                    {% if form.movement_type.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.movement_type.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ form.quantity_change.id_for_label }}">Quantity Change *</label>
+                                    <p class="small text-muted">Use positive numbers for additions, negative for removals</p>
+                                    {{ form.quantity_change }}
+                                    {% if form.quantity_change.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.quantity_change.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ form.reference.id_for_label }}">Reference</label>
+                                    {{ form.reference }}
+                                    {% if form.reference.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.reference.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.notes.id_for_label }}">Notes</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="invalid-feedback d-block">{{ form.notes.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'financeaccounting:stock_movement_list' %}" class="btn btn-secondary">
+                                <i data-feather="x" class="me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-info">
+                                <i data-feather="save" class="me-1"></i> Record Movement
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
