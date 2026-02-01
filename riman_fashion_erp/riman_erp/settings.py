@@ -215,7 +215,7 @@ os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
 # SECURITY Settings for Production
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False  # Render handles SSL
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: riaman-erp
+    env: python
+    plan: free
+    runtime: python-3.9
+    buildCommand: pip install -r riman_fashion_erp/requirements.txt
+    startCommand: cd riman_fashion_erp && gunicorn riman_erp.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.18
+      - key: DEBUG
+        value: false
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
