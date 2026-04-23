@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Rentals Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i data-feather="calendar"></i> Rentals Management</h1>
+        </div>
+    </div>
+    
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Agreements</h6>
+                    <h3>{{ rentals|length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <a href="{% url 'rental_list' %}" class="btn btn-primary">View Rentals</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

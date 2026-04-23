@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Invoice - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4"><i data-feather="file-text"></i> Create New Invoice</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="needs-validation">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.invoice_number.id_for_label }}" class="form-label">Invoice Number *</label>
+                            {{ form.invoice_number }}
+                            {% if form.invoice_number.errors %}
+                                <div class="invalid-feedback d-block">{{ form.invoice_number.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.client.id_for_label }}" class="form-label">Client *</label>
+                            {{ form.client }}
+                            {% if form.client.errors %}
+                                <div class="invalid-feedback d-block">{{ form.client.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.order.id_for_label }}" class="form-label">Order</label>
+                            {{ form.order }}
+                            {% if form.order.errors %}
+                                <div class="invalid-feedback d-block">{{ form.order.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.total_amount.id_for_label }}" class="form-label">Total Amount *</label>
+                                    {{ form.total_amount }}
+                                    {% if form.total_amount.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.total_amount.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.amount_paid.id_for_label }}" class="form-label">Amount Paid</label>
+                                    {{ form.amount_paid }}
+                                    {% if form.amount_paid.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.amount_paid.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.payment_status.id_for_label }}" class="form-label">Payment Status *</label>
+                                    {{ form.payment_status }}
+                                    {% if form.payment_status.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.payment_status.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.status.id_for_label }}" class="form-label">Status *</label>
+                                    {{ form.status }}
+                                    {% if form.status.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.status.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label">Notes</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="invalid-feedback d-block">{{ form.notes.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'invoice_list' %}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Create Invoice</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

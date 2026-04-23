@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inventory Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i data-feather="package"></i> Inventory Management</h1>
+        </div>
+    </div>
+    
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Products</h6>
+                    <h3>{{ products|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Stock Items</h6>
+                    <h3>{{ stocks|length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <a href="{% url 'product_list' %}" class="btn btn-primary me-2">View Products</a>
+            <a href="{% url 'stock_list' %}" class="btn btn-secondary">View Stock</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

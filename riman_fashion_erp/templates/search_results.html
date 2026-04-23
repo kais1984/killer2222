@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results - RIMAN Fashion ERP{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>🔍 Global Search</h2>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="form-inline">
+                        <div class="form-group w-100">
+                            <input type="text" name="q" class="form-control w-75" placeholder="Search clients, products, invoices..." value="{{ query }}">
+                            <button type="submit" class="btn btn-primary ml-2">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if query %}
+            <div class="alert alert-info">
+                Showing results for: <strong>"{{ query }}"</strong>
+            </div>
+
+            <!-- Clients -->
+            {% if clients %}
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">👥 Clients ({{ clients|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for client in clients %}
+                                <tr>
+                                    <td>{{ client.first_name }} {{ client.last_name }}</td>
+                                    <td>{{ client.email }}</td>
+                                    <td>{{ client.phone }}</td>
+                                    <td>
+                                        <a href="/admin/crm/client/{{ client.id }}/change/" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Products -->
+            {% if products %}
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">📦 Products ({{ products|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Name</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{ product.sku }}</td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.quantity_in_stock }}</td>
+                                    <td>${{ product.sale_price }}</td>
+                                    <td>
+                                        <a href="/admin/inventory/product/{{ product.id }}/change/" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Invoices -->
+            {% if invoices %}
+            <div class="card mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🧾 Invoices ({{ invoices|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{ invoice.invoice_number }}</td>
+                                    <td>${{ invoice.total_amount }}</td>
+                                    <td>
+                                        <span class="badge badge-secondary">{{ invoice.status }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/accounting/invoice/{{ invoice.id }}/change/" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Stock Movements -->
+            {% if stock_movements %}
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">📊 Stock Movements ({{ stock_movements|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Movement Number</th>
+                                    <th>Product</th>
+                                    <th>Type</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for movement in stock_movements %}
+                                <tr>
+                                    <td>{{ movement.movement_number }}</td>
+                                    <td>{{ movement.product.name }}</td>
+                                    <td><span class="badge badge-info">{{ movement.movement_type }}</span></td>
+                                    <td>{{ movement.quantity }}</td>
+                                    <td>
+                                        <a href="/admin/inventory/stockmovement/{{ movement.id }}/change/" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- GL Accounts -->
+            {% if gl_accounts %}
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">💼 GL Accounts ({{ gl_accounts|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Balance</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for account in gl_accounts %}
+                                <tr>
+                                    <td>{{ account.account_code }}</td>
+                                    <td>{{ account.account_name }}</td>
+                                    <td><span class="badge badge-light">{{ account.account_type }}</span></td>
+                                    <td>${{ account.balance }}</td>
+                                    <td>
+                                        <a href="/admin/accounting/chartofaccounts/{{ account.id }}/change/" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- No Results -->
+            {% if not contracts and not clients and not products and not invoices and not stock_movements and not gl_accounts %}
+            <div class="alert alert-warning">
+                No results found for "<strong>{{ query }}</strong>". Try a different search term.
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div class="alert alert-secondary">
+                Enter a search term to find contracts, clients, products, invoices, and more.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-responsive {
+        border-radius: 4px;
+    }
+    
+    .card {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: none;
+    }
+    
+    .card-header {
+        border-bottom: 2px solid rgba(0,0,0,0.1);
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    h2 {
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

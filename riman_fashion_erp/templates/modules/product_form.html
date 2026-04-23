@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Add{% endif %} Product - RIMAN ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i data-feather="package"></i> {% if form.instance.id %}Edit{% else %}Add{% endif %} Product</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Basic Information -->
+                        <h5 class="mb-3"><i data-feather="info"></i> Basic Information</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Product Name *</label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}<div class="invalid-feedback d-block">{{ form.name.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">SKU *</label>
+                                    {{ form.sku }}
+                                    {% if form.sku.errors %}<div class="invalid-feedback d-block">{{ form.sku.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}<div class="invalid-feedback d-block">{{ form.description.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- Classification -->
+                        <h5 class="mb-3 mt-4"><i data-feather="tag"></i> Classification</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Dress Type *</label>
+                                    {{ form.dress_type }}
+                                    {% if form.dress_type.errors %}<div class="invalid-feedback d-block">{{ form.dress_type.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Category</label>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}<div class="invalid-feedback d-block">{{ form.category.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Collection</label>
+                                    {{ form.collection }}
+                                    {% if form.collection.errors %}<div class="invalid-feedback d-block">{{ form.collection.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Physical Attributes -->
+                        <h5 class="mb-3 mt-4"><i data-feather="droplet"></i> Physical Attributes</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Size</label>
+                                    {{ form.size }}
+                                    {% if form.size.errors %}<div class="invalid-feedback d-block">{{ form.size.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Color</label>
+                                    {{ form.color }}
+                                    {% if form.color.errors %}<div class="invalid-feedback d-block">{{ form.color.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Material</label>
+                                    {{ form.material }}
+                                    {% if form.material.errors %}<div class="invalid-feedback d-block">{{ form.material.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inventory & Pricing -->
+                        <h5 class="mb-3 mt-4"><i data-feather="dollar-sign"></i> Inventory & Pricing</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Stock Quantity</label>
+                                    {{ form.quantity_in_stock }}
+                                    {% if form.quantity_in_stock.errors %}<div class="invalid-feedback d-block">{{ form.quantity_in_stock.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Cost Price</label>
+                                    {{ form.cost_price }}
+                                    {% if form.cost_price.errors %}<div class="invalid-feedback d-block">{{ form.cost_price.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Sale Price</label>
+                                    {{ form.sale_price }}
+                                    {% if form.sale_price.errors %}<div class="invalid-feedback d-block">{{ form.sale_price.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Rental Price/Day</label>
+                                    {{ form.rental_price_per_day }}
+                                    {% if form.rental_price_per_day.errors %}<div class="invalid-feedback d-block">{{ form.rental_price_per_day.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Availability</label>
+                            {{ form.availability }}
+                            {% if form.availability.errors %}<div class="invalid-feedback d-block">{{ form.availability.errors }}</div>{% endif %}
+                        </div>
+
+                        <hr>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a href="{% url 'product_list' %}" class="btn btn-secondary">
+                                <i data-feather="x"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Save Product
+                            </button>
+                        </div>
+                    </form>
+
+                    {% if form.instance.id %}
+                    <div class="alert alert-info mt-4">
+                        <i data-feather="help-circle"></i> After saving, you can add product photos on the product detail page.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 0.75rem;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #2c3e50;
+        box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Departments - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5"><i data-feather="building" class="me-2"></i> Departments</h1>
+            <p class="text-muted">Manage company departments</p>
+        </div>
+        <a href="{% url 'hr:department_add' %}" class="btn btn-primary btn-lg">
+            <i data-feather="plus" class="me-2"></i> Add Department
+        </a>
+    </div>
+
+    <div class="row">
+        {% for dept in departments %}
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i data-feather="folder" class="me-2"></i> {{ dept.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ dept.description|truncatewords:15 }}</p>
+                    <div class="mb-3">
+                        <span class="badge bg-info">{{ dept.employees.count }} employees</span>
+                        <span class="badge bg-secondary">{{ dept.positions.count }} positions</span>
+                    </div>
+                    {% if dept.manager %}
+                        <small class="text-muted">Manager: <strong>{{ dept.manager.full_name }}</strong></small>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white border-top">
+                    <a href="{% url 'hr:department_edit' dept.id %}" class="btn btn-sm btn-outline-primary">
+                        <i data-feather="edit"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center text-muted py-5">No departments yet</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

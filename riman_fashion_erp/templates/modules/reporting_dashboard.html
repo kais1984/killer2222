@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reporting Dashboard - RIAMAN Fashion ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1><i data-feather="bar-chart-2"></i> Reporting & Analytics</h1>
+            <p class="text-muted">Complete reporting suite with PDF & Excel exports</p>
+        </div>
+    </div>
+    
+    <!-- Quick Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-white-50"><i data-feather="calendar"></i> Today's Sales</h6>
+                    <h3>{{ today_sales_count }}</h3>
+                    <small>Revenue: ${{ today_revenue|floatformat:2 }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-white-50"><i data-feather="calendar"></i> This Month</h6>
+                    <h3>{{ month_sales_count }}</h3>
+                    <small>Revenue: ${{ month_revenue|floatformat:2 }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-white-50"><i data-feather="calendar"></i> This Year</h6>
+                    <h3>{{ year_sales_count }}</h3>
+                    <small>Revenue: ${{ year_revenue|floatformat:2 }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h6 class="card-title text-white-50"><i data-feather="clock"></i> Pending</h6>
+                    <h3>{{ pending_invoices_count }}</h3>
+                    <small>Amount: ${{ pending_amount|floatformat:2 }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Report Shortcuts -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="file-text"></i> Available Reports & Exports</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Sales Reports -->
+                        <div class="col-md-4 mb-3">
+                            <div class="list-group">
+                                <a href="{% url 'sales_report' %}" class="list-group-item list-group-item-action">
+                                    <h6 class="mb-1"><i data-feather="shopping-cart"></i> Sales Report</h6>
+                                    <small class="text-muted">View & filter sales data</small>
+                                </a>
+                                <a href="{% url 'sales_report_pdf' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-danger"></i> Sales Report (PDF)
+                                </a>
+                                <a href="{% url 'sales_report_excel' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-success"></i> Sales Report (Excel)
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Invoice Reports -->
+                        <div class="col-md-4 mb-3">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action disabled">
+                                    <h6 class="mb-1"><i data-feather="file-text"></i> Invoice Reports</h6>
+                                    <small class="text-muted">Invoice details & status</small>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-danger"></i> Individual Invoice PDF
+                                </a>
+                                <a href="{% url 'invoices_excel' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-success"></i> All Invoices (Excel)
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- GL Reports -->
+                        <div class="col-md-4 mb-3">
+                            <div class="list-group">
+                                <a href="{% url 'gl_report' %}" class="list-group-item list-group-item-action">
+                                    <h6 class="mb-1"><i data-feather="book"></i> GL Report</h6>
+                                    <small class="text-muted">General Ledger entries</small>
+                                </a>
+                                <a href="{% url 'gl_report_pdf' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-danger"></i> GL Report (PDF)
+                                </a>
+                                <a href="{% url 'gl_excel' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-success"></i> GL Report (Excel)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <!-- Inventory Reports -->
+                        <div class="col-md-4 mb-3">
+                            <div class="list-group">
+                                <a href="{% url 'inventory_report' %}" class="list-group-item list-group-item-action">
+                                    <h6 class="mb-1"><i data-feather="package"></i> Inventory Report</h6>
+                                    <small class="text-muted">Stock levels & values</small>
+                                </a>
+                                <a href="{% url 'inventory_excel' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="file-text" class="text-success"></i> Inventory (Excel)
+                                </a>
+                                <a href="{% url 'product_import' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="upload" class="text-info"></i> Import Products
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Customer Management -->
+                        <div class="col-md-4 mb-3">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action disabled">
+                                    <h6 class="mb-1"><i data-feather="users"></i> Customer Management</h6>
+                                    <small class="text-muted">Import & manage customers</small>
+                                </a>
+                                <a href="{% url 'customer_import' %}" class="list-group-item list-group-item-action">
+                                    <i data-feather="upload" class="text-info"></i> Import Customers
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Invoices -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="file-text"></i> Recent Invoices</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Sale #</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in recent_invoices %}
+                                <tr>
+                                    <td><strong>{{ invoice.invoice_number }}</strong></td>
+                                    <td>{{ invoice.sale.sale_number }}</td>
+                                    <td>{{ invoice.sale.customer.first_name }} {{ invoice.sale.customer.last_name }}</td>
+                                    <td>{{ invoice.invoice_date|date:"m/d/Y" }}</td>
+                                    <td>${{ invoice.sale.total_amount|floatformat:2 }}</td>
+                                    <td>
+                                        {% if invoice.status == 'paid' %}
+                                        <span class="badge bg-success">Paid</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">{{ invoice.status|title }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'invoice_pdf' invoice.pk %}" class="btn btn-sm btn-outline-danger" title="Download PDF">
+                                            <i data-feather="download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">No invoices yet</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .list-group-item {
+        border-left: 4px solid transparent;
+    }
+    .list-group-item:hover {
+        border-left-color: #007bff;
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

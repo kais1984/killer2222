@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CRM Dashboard - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i data-feather="users" class="me-2"></i> CRM Management</h1>
+        </div>
+    </div>
+    
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Clients</h6>
+                    <h3>{{ clients|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Contacts</h6>
+                    <h3>{{ contacts|length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <a href="{% url 'client_list' %}" class="btn btn-primary me-2">View Clients</a>
+            <a href="{% url 'contact_list' %}" class="btn btn-secondary">View Contacts</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

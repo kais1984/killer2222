@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: riman-fix <noreply@example.com>
+Date: Thu, 29 Jan 2026 13:15:00 +0000
+Subject: [PATCH] Add test reproducing BaseContext.__copy__ AttributeError
+
+---
+ tests/template_tests/test_context_copy.py | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 tests/template_tests/test_context_copy.py
+
+diff --git a/tests/template_tests/test_context_copy.py b/tests/template_tests/test_context_copy.py
+new file mode 100644
+index 0000000..2222222
+--- /dev/null
++++ b/tests/template_tests/test_context_copy.py
+@@
++from django.test import SimpleTestCase
++from django.template import Context, RequestContext, Template
++
++
++class ContextCopyTests(SimpleTestCase):
++    def test_context_new_preserves_template_attribute(self):
++        """Context.new() should not lose instance attributes like 'template'."""
++        c = Context({'foo': 'bar'})
++        c.template = Template('dummy')
++        new = c.new({})
++        # Should have a 'template' attribute and not raise AttributeError
++        self.assertTrue(hasattr(new, 'template'))
++
++    def test_request_context_new_does_not_remove_template(self):
++        req_ctx = RequestContext({})
++        req_ctx.template = Template('dummy')
++        new = req_ctx.new({})
++        self.assertTrue(hasattr(new, 'template'))
++
+-- 
+2.42.0

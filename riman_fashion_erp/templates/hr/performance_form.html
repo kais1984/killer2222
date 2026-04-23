@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Performance Review - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h4 class="mb-0"><i data-feather="star" class="me-2"></i> Performance Review</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Employee *</label>
+                                {{ form.employee }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Reviewer</label>
+                                {{ form.reviewer }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Period *</label>
+                                {{ form.period }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Overall Rating *</label>
+                                {{ form.overall_rating }}
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">Rate on scale of 1-5 (1=Poor, 5=Excellent)</div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Productivity *</label>
+                                {{ form.productivity }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Quality of Work *</label>
+                                {{ form.quality }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Teamwork *</label>
+                                {{ form.teamwork }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Attendance *</label>
+                                {{ form.attendance }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Comments</label>
+                            {{ form.comments }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Goals for Next Period</label>
+                            {{ form.goals }}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'hr:performance_list' %}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

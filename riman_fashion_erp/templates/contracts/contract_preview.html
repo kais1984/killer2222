@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ contract_name }} Preview - RIMAN Fashion ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 mb-0">
+                <i data-feather="file-text" class="text-primary me-2"></i>{{ contract_name }}
+            </h1>
+            <p class="text-muted mt-2">Preview and download</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'contracts_list' %}" class="btn btn-sm btn-outline-secondary">
+                <i data-feather="arrow-left" class="me-2"></i>Back to Contracts
+            </a>
+            <a href="{% url 'download_contract' contract_id %}" class="btn btn-sm btn-primary">
+                <i data-feather="download" class="me-2"></i>Download PDF
+            </a>
+        </div>
+    </div>
+
+    <!-- Contract Preview Section -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Contract Content will be loaded here -->
+                    <div class="contract-content">
+                        <div class="text-center mb-5">
+                            <h2 class="mb-2">RIMAN FASHION</h2>
+                            <h4 class="text-muted">{{ contract_name }}</h4>
+                            <hr>
+                        </div>
+
+                        <!-- Sample Contract Content -->
+                        <div class="contract-section mb-4">
+                            <h5><strong>1. PARTIES</strong></h5>
+                            <p>
+                                This Agreement is entered into as of <strong>28th January 2026</strong>, between:
+                            </p>
+                            <p>
+                                <strong>Client/Customer ("Customer")</strong><br>
+                                And<br>
+                                <strong>RIMAN FASHION ("Service Provider")</strong>
+                            </p>
+                        </div>
+
+                        <div class="contract-section mb-4">
+                            <h5><strong>2. SERVICES</strong></h5>
+                            <p>
+                                The Service Provider agrees to provide professional fashion design, rental, and custom dress manufacturing services as requested by the Customer.
+                            </p>
+                        </div>
+
+                        <div class="contract-section mb-4">
+                            <h5><strong>3. PAYMENT TERMS</strong></h5>
+                            <ul>
+                                <li><strong>50% Advance:</strong> Due upon contract signature</li>
+                                <li><strong>50% Final:</strong> Due upon completion of services</li>
+                                <li><strong>5% VAT:</strong> Applied to total amount</li>
+                            </ul>
+                        </div>
+
+                        <div class="contract-section mb-4">
+                            <h5><strong>4. TERM</strong></h5>
+                            <p>
+                                This agreement shall commence on the date of signature and continue until all services are completed or until terminated by either party with 30 days written notice.
+                            </p>
+                        </div>
+
+                        <div class="contract-section mb-4">
+                            <h5><strong>5. CONFIDENTIALITY</strong></h5>
+                            <p>
+                                Both parties agree to maintain confidentiality regarding business information, designs, and customer data shared under this agreement.
+                            </p>
+                        </div>
+
+                        <div class="contract-section mb-5 pb-4 border-bottom">
+                            <h5><strong>6. AGREEMENT</strong></h5>
+                            <p>
+                                By downloading and accepting this contract, both parties agree to the terms and conditions outlined herein.
+                            </p>
+                        </div>
+
+                        <!-- Signature Section -->
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <div class="signature-box">
+                                    <p class="mb-1"><strong>Customer Signature</strong></p>
+                                    <div style="border-top: 2px solid #333; height: 60px; margin: 20px 0;"></div>
+                                    <p class="text-muted small">_____________________</p>
+                                    <p class="text-muted small">Date: _______________</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="signature-box">
+                                    <p class="mb-1"><strong>RIMAN Fashion Authorized Representative</strong></p>
+                                    <div style="border-top: 2px solid #333; height: 60px; margin: 20px 0;"></div>
+                                    <p class="text-muted small">_____________________</p>
+                                    <p class="text-muted small">Date: _______________</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Info -->
+                        <div class="text-center mt-5 pt-4 border-top text-muted small">
+                            <p>
+                                <i data-feather="info" class="me-2"></i>
+                                This is a professional contract template. For official use, please consult with legal counsel.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="text-center mt-4">
+                <a href="{% url 'download_contract' contract_id %}" class="btn btn-lg btn-primary">
+                    <i data-feather="download" class="me-2"></i>Download as PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .contract-content {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.8;
+        color: #333;
+    }
+    
+    .contract-section {
+        margin-bottom: 2rem;
+    }
+    
+    .contract-section h5 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+    
+    .contract-section p {
+        margin-bottom: 0.8rem;
+        text-align: justify;
+    }
+    
+    .signature-box {
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .hover-shadow {
+        transition: box-shadow 0.3s ease;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+    }
+</style>
+{% endblock %}

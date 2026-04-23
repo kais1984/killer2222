@@ -1,0 +1,979 @@
+/* ================================
+   COMPONENT LIBRARY - REUSABLE PATTERNS
+   ================================ */
+
+/* ============================================
+   1. HEADER & NAVIGATION PATTERNS
+   ============================================ */
+
+/* Hero section with gradient */
+.hero-section {
+  background: linear-gradient(135deg, #f5f7fb 0%, #eff2f8 100%);
+  padding: var(--space-3xl) var(--space-2xl);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(79, 140, 255, 0.05), transparent);
+  border-radius: 50%;
+}
+
+.hero-section h1 {
+  position: relative;
+  z-index: 1;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  gap: var(--space-md);
+}
+
+.breadcrumb-item {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
+.breadcrumb-item.active {
+  color: var(--gray-700);
+  font-weight: 600;
+}
+
+.breadcrumb-item a {
+  color: var(--primary-600);
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--primary-700);
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '/';
+  color: var(--gray-300);
+}
+
+/* ============================================
+   2. DATA DISPLAY PATTERNS
+   ============================================ */
+
+/* Stat grid - 3 column display */
+.stats-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-xl);
+}
+
+/* Stat grid - 4 column display */
+.stats-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Minimal stat display */
+.stat-minimal {
+  text-align: center;
+  padding: var(--space-lg) 0;
+}
+
+.stat-minimal-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-900);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.stat-minimal-label {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray-500);
+}
+
+.stat-minimal-change {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--gray-100);
+}
+
+/* Horizontal stat bar */
+.stat-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background: #ffffff;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-md);
+}
+
+.stat-bar-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-50);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-600);
+  flex-shrink: 0;
+}
+
+.stat-bar-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-bar-label {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-bar-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-900);
+}
+
+/* ============================================
+   3. FORMS & INPUT PATTERNS
+   ============================================ */
+
+/* Input with icon prefix */
+.input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--space-lg);
+  color: var(--gray-400);
+  pointer-events: none;
+}
+
+.input-icon i[data-feather] {
+  width: 18px;
+  height: 18px;
+}
+
+.input-group.has-icon .form-control {
+  padding-left: 40px;
+}
+
+/* Floating label effect */
+.form-floating .form-control {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-sm);
+}
+
+.form-floating .form-label {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-lg);
+  pointer-events: none;
+  transition: all var(--transition-fast);
+  color: var(--gray-400);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.form-floating .form-control:focus ~ .form-label,
+.form-floating .form-control:not(:placeholder-shown) ~ .form-label {
+  top: var(--space-sm);
+  left: var(--space-lg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary-600);
+}
+
+/* Input with action button */
+.input-action {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: stretch;
+}
+
+.input-action .form-control {
+  flex: 1;
+}
+
+.input-action .btn {
+  white-space: nowrap;
+}
+
+/* Form validation states */
+.is-valid .form-control {
+  border-color: var(--success);
+}
+
+.is-valid .form-control:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.is-invalid .form-control {
+  border-color: var(--danger);
+}
+
+.is-invalid .form-control:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.valid-feedback, .invalid-feedback {
+  display: block;
+  margin-top: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.valid-feedback {
+  color: var(--success);
+}
+
+.invalid-feedback {
+  color: var(--danger);
+}
+
+/* Toggle switch */
+.toggle-switch {
+  display: inline-block;
+  position: relative;
+  width: 48px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gray-300);
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.toggle-slider::before {
+  position: absolute;
+  content: '';
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--primary-600);
+}
+
+input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* ============================================
+   4. FILTER & SEARCH PATTERNS
+   ============================================ */
+
+/* Search bar with filters */
+.search-bar {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
+
+.search-input i[data-feather] {
+  position: absolute;
+  left: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  width: 18px;
+  height: 18px;
+}
+
+.search-input .form-control {
+  padding-left: 40px;
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.5rem 1rem;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background: var(--gray-200);
+  border-color: var(--gray-400);
+}
+
+.filter-chip.active {
+  background: var(--primary-100);
+  border-color: var(--primary-300);
+  color: var(--primary-700);
+}
+
+.filter-chip-remove {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.filter-chip-remove:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   5. MODAL & DIALOG PATTERNS
+   ============================================ */
+
+/* Confirmation modal */
+.modal-confirm {
+  text-align: center;
+}
+
+.modal-confirm-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--warning-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-lg);
+  color: var(--warning);
+}
+
+.modal-confirm-icon i[data-feather] {
+  width: 32px;
+  height: 32px;
+}
+
+/* Success modal */
+.modal-confirm.success .modal-confirm-icon {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+/* Delete modal */
+.modal-confirm.delete .modal-confirm-icon {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ============================================
+   6. LOADING & EMPTY STATES
+   ============================================ */
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--gray-100) 0%,
+    var(--gray-200) 50%,
+    var(--gray-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.skeleton-text {
+  height: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
+}
+
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-lg);
+}
+
+.empty-state-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--gray-100);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-xl);
+  color: var(--gray-400);
+}
+
+.empty-state-icon i[data-feather] {
+  width: 40px;
+  height: 40px;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-md);
+}
+
+.empty-state-text {
+  color: var(--gray-500);
+  margin-bottom: var(--space-xl);
+}
+
+/* ============================================
+   7. TIMELINE & PROCESS
+   ============================================ */
+
+/* Timeline item */
+.timeline-item {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  position: relative;
+}
+
+.timeline-marker {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-50);
+  border: 2px solid var(--primary-300);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary-600);
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-item.completed .timeline-marker {
+  background: var(--success-soft);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.timeline-item.pending .timeline-marker {
+  background: var(--warning-soft);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.timeline-item.failed .timeline-marker {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.timeline-connector {
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  width: 2px;
+  height: calc(100% + var(--space-lg));
+  background: var(--gray-200);
+  z-index: 1;
+}
+
+.timeline-item:last-child .timeline-connector {
+  display: none;
+}
+
+.timeline-content {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.timeline-title {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-sm);
+}
+
+.timeline-time {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+
+.timeline-description {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-top: var(--space-sm);
+}
+
+/* ============================================
+   8. PROGRESS & GAUGES
+   ============================================ */
+
+/* Progress bar */
+.progress {
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-lg);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--primary-600), var(--primary-500));
+  height: 100%;
+  transition: width var(--transition-base);
+  border-radius: var(--radius-full);
+}
+
+.progress-bar.success {
+  background: linear-gradient(90deg, var(--success), #059669);
+}
+
+.progress-bar.warning {
+  background: linear-gradient(90deg, var(--warning), #d97706);
+}
+
+.progress-bar.danger {
+  background: linear-gradient(90deg, var(--danger), #dc2626);
+}
+
+/* Labeled progress */
+.progress-labeled {
+  margin-bottom: var(--space-lg);
+}
+
+.progress-labeled-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.progress-labeled-label {
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.progress-labeled-value {
+  color: var(--gray-500);
+}
+
+/* ============================================
+   9. ACTIVITY FEED
+   ============================================ */
+
+.activity-feed {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-item {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--gray-100);
+  align-items: flex-start;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--gray-200);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-500);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-title {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-xs);
+}
+
+.activity-title strong {
+  color: var(--primary-700);
+}
+
+.activity-text {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin-bottom: var(--space-xs);
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   10. RATINGS & REVIEWS
+   ============================================ */
+
+.star-rating {
+  display: flex;
+  gap: var(--space-xs);
+  font-size: 1.5rem;
+}
+
+.star-rating i {
+  color: #fbbf24;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.star-rating i:hover {
+  transform: scale(1.2);
+}
+
+.star-rating.readonly i {
+  cursor: default;
+}
+
+.star-rating.readonly i:hover {
+  transform: none;
+}
+
+/* ============================================
+   11. TAGS & LABELS
+   ================================== */
+
+.tag {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gray-700);
+  margin-right: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  transition: all var(--transition-fast);
+}
+
+.tag:hover {
+  background: var(--gray-200);
+  border-color: var(--gray-300);
+}
+
+.tag.tag-primary {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+  color: var(--primary-700);
+}
+
+.tag.tag-success {
+  background: var(--success-soft);
+  border-color: #a7f3d0;
+  color: var(--success);
+}
+
+.tag.tag-warning {
+  background: var(--warning-soft);
+  border-color: #fcd34d;
+  color: var(--warning);
+}
+
+.tag.tag-danger {
+  background: var(--danger-soft);
+  border-color: #fca5a5;
+  color: var(--danger);
+}
+
+/* ============================================
+   12. TOOLTIPS
+   ================================== */
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-wrapper:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  background: var(--gray-900);
+  color: #ffffff;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  position: absolute;
+  z-index: var(--z-tooltip);
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+}
+
+.tooltip-box::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--gray-900) transparent transparent transparent;
+}
+
+/* ============================================
+   13. DIVIDERS & SEPARATORS
+   ================================== */
+
+.divider {
+  border-top: 1px solid var(--gray-200);
+  margin: var(--space-xl) 0;
+}
+
+.divider.with-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  color: var(--gray-400);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.divider.with-text::before,
+.divider.with-text::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
+/* ============================================
+   14. SIDE-BY-SIDE LAYOUTS
+   ================================== */
+
+.row-aligned {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.row-aligned-label {
+  min-width: 150px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.row-aligned-content {
+  flex: 1;
+}
+
+/* ============================================
+   15. CUSTOM SCROLLBARS
+   ================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+  transition: background var(--transition-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
+}
+
+/* ============================================
+   16. CODE BLOCKS & SNIPPETS
+   ================================== */
+
+.code-block {
+  background: var(--gray-900);
+  color: #e5e7eb;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-xl);
+}
+
+.code-block code {
+  color: inherit;
+  font-size: inherit;
+}
+
+.code-inline {
+  background: var(--gray-100);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.875rem;
+  color: var(--danger);
+}
+
+/* ============================================
+   17. ONBOARDING & TOUR
+   ================================== */
+
+.tour-step {
+  background: #ffffff;
+  border: 2px solid var(--primary-600);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-xl);
+  max-width: 400px;
+  z-index: var(--z-modal);
+  animation: slideInRight 0.3s ease-out;
+}
+
+.tour-step-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.tour-step-badge {
+  background: var(--primary-600);
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.tour-step-title {
+  font-weight: 700;
+  color: var(--primary-900);
+}
+
+.tour-step-body {
+  margin-bottom: var(--space-lg);
+}
+
+.tour-step-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+}
+
+/* Highlight overlay */
+.tour-highlight {
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-lg);
+  z-index: calc(var(--z-modal) - 1);
+}

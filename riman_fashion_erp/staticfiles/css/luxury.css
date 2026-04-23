@@ -1,0 +1,109 @@
+/* Luxury Minimalist Theme Overrides */
+:root{
+  --deep-charcoal: #1A1A1A;
+  --soft-champagne: #FDF5E6;
+  --muted-gold: #C5A059;
+  --muted-gold-contrast: rgba(197,160,89,0.12);
+  --luxury-radius: 4px;
+  --luxury-shadow: 0 6px 20px rgba(10,10,10,0.06);
+}
+
+/* Base typography */
+body{ 
+  background: #fff;
+  color: #222;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+.luxury-heading{
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--deep-charcoal);
+  letter-spacing: -0.4px;
+}
+
+.luxury-subheading{color:#6b6b6b}
+
+/* Navbar / Sidebar */
+.navbar, .sidebar{
+  background: linear-gradient(180deg, #111111 0%, #0f0f0f 100%);
+  color: var(--soft-champagne);
+}
+.navbar a, .sidebar a{ color: var(--soft-champagne) !important; }
+
+/* Stat cards */
+.stat-card{
+  background: #fff;
+  border: 1px solid rgba(26,26,26,0.06);
+  border-radius: var(--luxury-radius);
+  padding: 22px;
+  box-shadow: var(--luxury-shadow);
+  text-align: left;
+}
+.luxury-stat .stat-value{font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #111}
+.luxury-stat .stat-label{color:#7a7a7a; font-size:0.85rem}
+.gold{color:var(--muted-gold); font-weight:600}
+.stat-icon{color:var(--muted-gold); opacity:0.95}
+
+/* Quick actions gallery */
+.quick-actions{gap: 12px}
+.qa-button{
+  display:block;
+  border:1px solid rgba(26,26,26,0.06);
+  background: #fff;
+  color: #222;
+  padding: 18px 12px;
+  border-radius: 8px;
+  text-decoration:none;
+  transition: transform .12s ease, box-shadow .12s ease;
+  box-shadow: 0 2px 8px rgba(10,10,10,0.04);
+}
+.qa-button:hover{ transform: translateY(-3px); box-shadow:0 10px 30px rgba(10,10,10,0.08) }
+.qa-icon{ stroke: currentColor; color: var(--deep-charcoal); width:28px; height:28px }
+
+/* System topbar */
+.system-topbar{
+  background: linear-gradient(90deg, rgba(249,246,240,1), rgba(254,252,247,1));
+  border-left: 4px solid var(--muted-gold);
+  padding: 12px 18px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+}
+
+/* Subtle badges */
+.badge-soft{background: var(--muted-gold-contrast); color: var(--muted-gold); border-radius:6px; padding:6px 8px}
+
+/* Feather icon muted style */
+.feather-muted{stroke: #7a7a7a}
+
+/* Utility tweaks */
+.card-header{background:transparent; border-bottom: none; font-weight:600}
+.card{ border:1px solid rgba(26,26,26,0.04); border-radius:8px }
+
+/* Responsive tweaks */
+@media (max-width:767px){
+  .qa-button{padding:12px}
+}
+
+/* Palette variants — add ?palette=rose or ?palette=ivory to preview via the query helper */
+.lux-palette-rose{
+  --deep-charcoal: #1b1b1b;
+  --soft-champagne: #FFF7F2;
+  --muted-gold: #D4A373;
+  --muted-gold-contrast: rgba(212,163,115,0.12);
+}
+.lux-palette-ivory{
+  --deep-charcoal: #111111;
+  --soft-champagne: #FEF8F0;
+  --muted-gold: #BFA36F;
+  --muted-gold-contrast: rgba(191,163,111,0.08);
+}
+.lux-palette-peat{
+  --deep-charcoal: #0f1720;
+  --soft-champagne: #F6F6F4;
+  --muted-gold: #C0A060;
+  --muted-gold-contrast: rgba(192,160,96,0.10);
+}
+
+/* End of luxury theme overrides */

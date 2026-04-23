@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Process{% endif %} Payroll - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h4 class="mb-0"><i data-feather="dollar-sign" class="me-2"></i> {% if form.instance.id %}Edit{% else %}Process{% endif %} Payroll</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Employee *</label>
+                            {{ form.employee }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Period Start *</label>
+                                {{ form.period_start }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Period End *</label>
+                                {{ form.period_end }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Period Type *</label>
+                            {{ form.period_type }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Base Salary *</label>
+                                {{ form.base_salary }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Bonus</label>
+                                {{ form.bonus }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Deductions</label>
+                                {{ form.deductions }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Net Salary *</label>
+                            {{ form.net_salary }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            {{ form.notes }}
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'hr:payroll_list' %}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Payroll</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Template Library - RIMAN Fashion ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 mb-0">
+                <i data-feather="layers" class="text-primary me-2"></i>Template Library
+            </h1>
+            <p class="text-muted mt-2">Browse and manage document templates for your business</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'upload_template' %}" class="btn btn-sm btn-success me-2">
+                <i data-feather="upload" class="me-2"></i>Upload Your Template
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">
+                <i data-feather="arrow-left" class="me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Tabs -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="templateTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                        <i data-feather="layers" class="me-2"></i>All Templates
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices" type="button" role="tab">
+                        <i data-feather="file-text" class="me-2"></i>Invoice Templates
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contracts-tab" data-bs-toggle="tab" data-bs-target="#contracts" type="button" role="tab">
+                        <i data-feather="file-text" class="me-2"></i>Contract Templates
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="templateTabContent">
+        <!-- All Templates Tab -->
+        <div class="tab-pane fade show active" id="all" role="tabpanel">
+            <div class="row">
+                <!-- Invoice Templates -->
+                {% if invoice_templates %}
+                <div class="col-12 mb-4">
+                    <h5 class="mb-3">
+                        <i data-feather="file-text" class="text-success me-2"></i>Invoice Templates
+                    </h5>
+                    <div class="row">
+                        {% for template in invoice_templates %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 shadow-sm border-0 hover-card">
+                                {% if template.preview_image %}
+                                <img src="{{ template.preview_image.url }}" class="card-img-top" alt="{{ template.name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i data-feather="file-text" class="fa-3x text-success opacity-50"></i>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ template.name }}</h6>
+                                    {% if template.is_default %}<span class="badge bg-warning me-2">Default</span>{% endif %}
+                                    <small class="text-muted d-block mb-3">{{ template.description|truncatewords:15 }}</small>
+                                    <div class="btn-group btn-group-sm w-100" role="group">
+                                        <a href="{% url 'template_preview' template.slug %}" class="btn btn-outline-primary" title="Preview">
+                                            <i data-feather="eye"></i>
+                                        </a>
+                                        <a href="{% url 'template_detail' template.slug %}" class="btn btn-outline-primary" title="Details">
+                                            <i data-feather="info"></i>
+                                        </a>
+                                        <a href="{% url 'template_download' template.slug %}" class="btn btn-primary" title="Download">
+                                            <i data-feather="download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Contract Templates -->
+                {% if contract_templates %}
+                <div class="col-12 mb-4">
+                    <h5 class="mb-3">
+                        <i data-feather="file-text" class="text-danger me-2"></i>Contract Templates
+                    </h5>
+                    <div class="row">
+                        {% for template in contract_templates %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 shadow-sm border-0 hover-card">
+                                {% if template.preview_image %}
+                                <img src="{{ template.preview_image.url }}" class="card-img-top" alt="{{ template.name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i data-feather="file-text" class="fa-3x text-danger opacity-50"></i>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ template.name }}</h6>
+                                    {% if template.is_default %}<span class="badge bg-warning me-2">Default</span>{% endif %}
+                                    <small class="text-muted d-block mb-3">{{ template.description|truncatewords:15 }}</small>
+                                    <div class="btn-group btn-group-sm w-100" role="group">
+                                        <a href="{% url 'template_preview' template.slug %}" class="btn btn-outline-danger" title="Preview">
+                                            <i data-feather="eye"></i>
+                                        </a>
+                                        <a href="{% url 'template_detail' template.slug %}" class="btn btn-outline-danger" title="Details">
+                                            <i data-feather="info"></i>
+                                        </a>
+                                        <a href="{% url 'template_download' template.slug %}" class="btn btn-danger" title="Download">
+                                            <i data-feather="download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Empty State -->
+                {% if not invoice_templates and not contract_templates %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center py-5">
+                        <i data-feather="inbox" class="fa-3x mb-3 text-muted"></i>
+                        <p class="text-muted mb-0">No templates available yet. Templates will appear here once they are created.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Invoice Templates Tab -->
+        <div class="tab-pane fade" id="invoices" role="tabpanel">
+            <div class="row">
+                {% for template in invoice_templates %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        {% if template.preview_image %}
+                        <img src="{{ template.preview_image.url }}" class="card-img-top" alt="{{ template.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i data-feather="file-text" class="fs-1 text-success opacity-50"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h6 class="card-title">{{ template.name }}</h6>
+                            {% if template.is_default %}<span class="badge bg-warning me-2">Default</span>{% endif %}
+                            <small class="text-muted d-block mb-3">{{ template.description|truncatewords:15 }}</small>
+                            <div class="btn-group btn-group-sm w-100" role="group">
+                                <a href="{% url 'template_preview' template.slug %}" class="btn btn-outline-success" title="Preview">
+                                    <i data-feather="eye"></i>
+                                </a>
+                                <a href="{% url 'template_detail' template.slug %}" class="btn btn-outline-success" title="Details">
+                                    <i data-feather="info"></i>
+                                </a>
+                                <a href="{% url 'template_download' template.slug %}" class="btn btn-success" title="Download">
+                                    <i data-feather="download"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">No invoice templates available.</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Contract Templates Tab -->
+        <div class="tab-pane fade" id="contracts" role="tabpanel">
+            <div class="row">
+                {% for template in contract_templates %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        {% if template.preview_image %}
+                        <img src="{{ template.preview_image.url }}" class="card-img-top" alt="{{ template.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i data-feather="file-text" class="fs-1 text-danger opacity-50"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h6 class="card-title">{{ template.name }}</h6>
+                            {% if template.is_default %}<span class="badge bg-warning me-2">Default</span>{% endif %}
+                            <small class="text-muted d-block mb-3">{{ template.description|truncatewords:15 }}</small>
+                            <div class="btn-group btn-group-sm w-100" role="group">
+                                <a href="{% url 'template_preview' template.slug %}" class="btn btn-outline-danger" title="Preview">
+                                    <i data-feather="eye"></i>
+                                </a>
+                                <a href="{% url 'template_detail' template.slug %}" class="btn btn-outline-success" title="Details">
+                                    <i data-feather="info"></i>
+                                </a>
+                                <a href="{% url 'template_download' template.slug %}" class="btn btn-success" title="Download">
+                                    <i data-feather="download"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">No contract templates available.</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+{% endblock %}

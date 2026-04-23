@@ -1,0 +1,994 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RIMAN FASHION - Premium ERP System for Fashion Business">
+    <title>{% block title %}RIMAN FASHION - ERP System{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts - Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Premium Design System CSS -->
+    <link rel="stylesheet" href="{% static 'css/premium-erp.css' %}">
+    
+    <!-- Component Library CSS -->
+    <link rel="stylesheet" href="{% static 'css/components-library.css' %}">#
+    <style>
+        /* Additional customizations for RIMAN FASHION */
+        :root {
+            /* Fashion-specific accent colors */
+            --fashion-rose: #f97316;
+            --fashion-cream: #fef5f3;
+            --fashion-burgundy: #7c2d12;
+        }
+        
+        body {
+            font-family: 'Inter', var(--font-inter);
+            background: linear-gradient(135deg, var(--gray-50) 0%, #faf9f8 100%);
+        }
+        
+        /* Custom navbar styling for fashion brand */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 2px solid var(--primary-100);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.375rem;
+            color: var(--primary-900) !important;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .navbar-brand i[data-feather] {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-600));
+            border-radius: var(--radius-lg);
+            padding: 6px;
+            color: white;
+        }
+        
+        /* Premium search bar */
+        .search-navbar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 var(--space-2xl);
+        }
+        
+        .search-navbar .form-control {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-full);
+            padding: 0.625rem 1rem;
+            font-size: 0.9375rem;
+            background: var(--gray-50);
+            transition: all var(--transition-fast);
+        }
+        
+        .search-navbar .form-control:focus {
+            background: #ffffff;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 3px rgba(127, 161, 196, 0.1);
+        }
+        
+        .search-navbar .form-control::placeholder {
+            color: var(--gray-400);
+        }
+        
+        /* Main layout - sidebar + content */
+        .app-layout {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        
+        .app-sidebar {
+            width: 220px;
+            border-right: 1px solid var(--gray-200);
+            background: #ffffff;
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .app-content {
+            flex: 1;
+            padding: var(--space-2xl) var(--space-3xl);
+            background: linear-gradient(180deg, #f8fafb 0%, #f3f5f7 100%);
+            overflow-y: auto;
+        }
+        
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .app-layout {
+                flex-direction: column;
+            }
+            
+            .app-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            
+            .app-content {
+                padding: var(--space-lg) var(--space-xl);
+            }
+            
+            .search-navbar {
+                display: none;
+            }
+        }
+        
+        /* Fashion-themed accent */
+        .accent-fashion {
+            color: var(--fashion-rose);
+        }
+        
+        .badge-fashion {
+            background: linear-gradient(135deg, var(--fashion-rose), #fb923c);
+            color: white;
+        }
+        
+        /* Smooth transitions for all pages */
+        .page-transition {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Dark Mode Toggle Button */
+        .dark-mode-toggle {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f9ff 100%);
+            border: 2px solid #dfe8f1;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+            color: #6366f1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+        }
+        
+        .dark-mode-toggle:hover {
+            background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%);
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .dark-mode-toggle i[data-feather] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .dark-mode .dark-mode-toggle {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-color: #334155;
+            color: #00d084;
+            box-shadow: 0 2px 8px rgba(0, 208, 132, 0.15);
+        }
+        
+        .dark-mode .dark-mode-toggle:hover {
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+            border-color: #00d084;
+            box-shadow: 0 4px 12px rgba(0, 208, 132, 0.25);
+        }
+        
+        
+        /* Section Color Indicators in Sidebar */
+        .sidebar-link {
+            position: relative;
+            transition: all var(--transition-fast);
+        }
+        
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: transparent;
+            border-radius: 0 2px 2px 0;
+            transition: all var(--transition-fast);
+        }
+        
+        /* Footer styling */
+        footer {
+            background: linear-gradient(180deg, #ffffff 0%, var(--gray-50) 100%);
+            border-top: 1px solid var(--gray-200);
+            padding: var(--space-2xl) var(--space-3xl);
+            margin-top: var(--space-3xl);
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+        
+        footer a {
+            color: var(--primary-600);
+        }
+        
+        footer a:hover {
+            color: var(--primary-700);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block extra_js_top %}{% endblock %}
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand" href="/">
+                <i data-feather="grid"></i>
+                <span>RIMAN FASHION</span>
+            </a>
+            
+            <!-- Search Bar (Desktop) with autocomplete -->
+            <div class="d-none d-lg-flex align-items-center me-3" style="position: relative; width: 350px;">
+                <form class="w-100" role="search" action="/search/" method="get" id="searchForm">
+                    <div class="input-group" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden;">
+                        <span class="input-group-text" style="background: transparent; border: 1px solid #e0e0e0; border-right: none;">
+                            <i data-feather="search" style="width: 18px; height: 18px; color: #667eea;"></i>
+                        </span>
+                        <input class="form-control" type="search" name="q" id="searchInput" placeholder="Search anything..." aria-label="Search" style="border: 1px solid #e0e0e0; border-left: none; border-right: none; font-size: 14px;" autocomplete="off">
+                        <button class="btn btn-sm" type="button" id="clearSearch" style="background: transparent; border: 1px solid #e0e0e0; border-left: none; display: none; padding: 8px 12px;">
+                            <i data-feather="x" style="width: 16px; height: 16px; color: #999;"></i>
+                        </button>
+                    </div>
+                    <!-- Search suggestions dropdown -->
+                    <div id="searchSuggestions" class="list-group" style="position: absolute; top: 100%; left: 0; right: 0; max-height: 350px; overflow-y: auto; margin-top: 8px; display: none; z-index: 1050; background: white; border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);"></div>
+                </form>
+            </div>
+
+            <!-- Help Button -->
+            <button class="btn btn-outline-secondary d-none d-lg-flex align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#helpModal" title="Get help" style="margin-right: 15px;">
+                <i data-feather="help-circle" style="width: 18px; height: 18px;"></i>
+                <span class="ms-2" style="font-size: 14px;">Help</span>
+            </button>
+            
+            <!-- Navbar Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="/" title="Dashboard">
+                            <i data-feather="home" style="width: 18px; height: 18px;"></i>
+                            <span class="ms-2">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" title="Sales">
+                            <i data-feather="shopping-cart" style="width: 18px; height: 18px;"></i>
+                            <span class="ms-2">Sales</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/sales/invoices/">
+                                <i data-feather="file-text"></i> Invoices
+                            </a></li>
+                            <li><a class="dropdown-item" href="/sales/orders/">
+                                <i data-feather="list"></i> Orders
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/sales/invoices/add/">
+                                <i data-feather="plus"></i> New Invoice
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" title="Inventory">
+                            <i data-feather="package" style="width: 18px; height: 18px;"></i>
+                            <span class="ms-2">Inventory</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/inventory/products/">
+                                <i data-feather="tag"></i> Products
+                            </a></li>
+                            <li><a class="dropdown-item" href="/inventory/warehouses/">
+                                <i data-feather="building"></i> Warehouses
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" title="More">
+                            <i data-feather="menu" style="width: 18px; height: 18px;"></i>
+                            <span class="ms-2">More</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/crm/">
+                                <i data-feather="users"></i> CRM
+                            </a></li>
+                            <li><a class="dropdown-item" href="/hr/">
+                                <i data-feather="briefcase"></i> HR
+                            </a></li>
+                            <li><a class="dropdown-item" href="/accounting/">
+                                <i data-feather="bar-chart-2"></i> Accounting
+                            </a></li>
+                            <li><a class="dropdown-item" href="/rentals/">
+                                <i data-feather="calendar"></i> Rentals
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/reports/">
+                                <i data-feather="bar-chart-2"></i> Reports
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- User Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <i data-feather="user-circle" style="width: 20px; height: 20px;"></i>
+                            <span class="ms-2">Account</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/profile/">
+                                <i data-feather="user"></i> Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="/company-settings/">
+                                <i data-feather="settings"></i> Settings
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout/">
+                                <i data-feather="log-out"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item ms-2">
+                        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                            <i data-feather="moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main App Layout -->
+    <div class="app-layout page-transition">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <nav class="sidebar-navigation">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Main</div>
+                    <a href="/" class="sidebar-link {% if request.resolver_match.app_name == 'dashboard' or request.path == '/' %}active{% endif %}">
+                        <i data-feather="home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Operations</div>
+                    <a href="/sales/" class="sidebar-link {% if 'sales' in request.path %}active{% endif %}">
+                        <i data-feather="shopping-cart"></i>
+                        <span>Sales & Invoices</span>
+                    </a>
+                    <a href="/inventory/" class="sidebar-link {% if 'inventory' in request.path %}active{% endif %}">
+                        <i data-feather="package"></i>
+                        <span>Inventory & Stock</span>
+                    </a>
+                    <a href="/crm/" class="sidebar-link {% if 'crm' in request.path %}active{% endif %}">
+                        <i data-feather="users"></i>
+                        <span>CRM - Clients</span>
+                    </a>
+                    <a href="/rentals/" class="sidebar-link {% if 'rentals' in request.path %}active{% endif %}">
+                        <i data-feather="calendar"></i>
+                        <span>Rentals</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Finance</div>
+                    <a href="/accounting/" class="sidebar-link {% if 'accounting' in request.path %}active{% endif %}">
+                        <i data-feather="bar-chart-2"></i>
+                        <span>Accounting & Ledger</span>
+                    </a>
+                    <a href="/reports/" class="sidebar-link {% if 'reports' in request.path %}active{% endif %}">
+                        <i data-feather="trending-up"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">People</div>
+                    <a href="/hr/" class="sidebar-link {% if 'hr' in request.path %}active{% endif %}">
+                        <i data-feather="briefcase"></i>
+                        <span>Human Resources</span>
+                    </a>
+                    <a href="/suppliers/" class="sidebar-link {% if 'suppliers' in request.path %}active{% endif %}">
+                        <i data-feather="truck"></i>
+                        <span>Suppliers</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">System</div>
+                    <a href="/company-settings/" class="sidebar-link">
+                        <i data-feather="settings"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="/templates/" class="sidebar-link {% if 'templates' in request.path %}active{% endif %}">
+                        <i data-feather="layers"></i>
+                        <span>Templates & Themes</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if message.tags == 'success' %}
+                                <i data-feather="check-circle"></i>
+                            {% elif message.tags == 'danger' %}
+                                <i data-feather="alert-circle"></i>
+                            {% elif message.tags == 'warning' %}
+                                <i data-feather="alert-triangle"></i>
+                            {% else %}
+                                <i data-feather="info"></i>
+                            {% endif %}
+                            <span>{{ message }}</span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0"><strong>RIMAN FASHION ERP</strong> &copy; 2026. All rights reserved.</p>
+                    <small>Premium Business Management Solution for Fashion Retail</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>
+                        <a href="/about/">About</a> •
+                        <a href="/help/">Help</a> •
+                        <a href="/privacy/">Privacy</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Feather Icons (local vendor) -->
+    <script src="{% static 'vendor/feather.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (window.feather) {
+                    feather.replace({
+                        'stroke-width': 1.5,
+                        'width': '20',
+                        'height': '20'
+                    });
+                }
+            } catch (e) {
+                console.warn('Feather icons could not be initialized');
+            }
+        });
+    </script>
+    
+    <!-- Dark Mode Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            // Check for saved dark mode preference or default to light mode
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            // Apply saved preference
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i data-feather="sun"></i>';
+                if (window.feather) feather.replace();
+            }
+            
+            // Dark mode toggle handler
+            darkModeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.body.classList.toggle('dark-mode');
+                
+                const isNowDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isNowDark);
+                
+                // Update icon
+                if (isNowDark) {
+                    darkModeToggle.innerHTML = '<i data-feather="sun"></i>';
+                } else {
+                    darkModeToggle.innerHTML = '<i data-feather="moon"></i>';
+                }
+                
+                // Re-render feather icons
+                if (window.feather) {
+                    feather.replace({
+                        'stroke-width': 1.5,
+                        'width': '20',
+                        'height': '20'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h5 class="modal-title" id="helpModalLabel">
+                        <i data-feather="help-circle" style="width: 20px; height: 20px; margin-right: 10px; vertical-align: middle;"></i>
+                        Help Center - Feature Guide
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="helpTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="search-tab" data-bs-toggle="tab" data-bs-target="#searchHelp" type="button" role="tab">
+                                <i data-feather="search" style="width: 16px; height: 16px; margin-right: 5px;"></i> Search
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="modules-tab" data-bs-toggle="tab" data-bs-target="#modulesHelp" type="button" role="tab">
+                                <i data-feather="layers" style="width: 16px; height: 16px; margin-right: 5px;"></i> Modules
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="features-tab" data-bs-toggle="tab" data-bs-target="#featuresHelp" type="button" role="tab">
+                                <i data-feather="star" style="width: 16px; height: 16px; margin-right: 5px;"></i> Features
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="shortcuts-tab" data-bs-toggle="tab" data-bs-target="#shortcutsHelp" type="button" role="tab">
+                                <i data-feather="keyboard" style="width: 16px; height: 16px; margin-right: 5px;"></i> Tips
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="helpTabContent">
+                        <!-- Search Help -->
+                        <div class="tab-pane fade show active" id="searchHelp" role="tabpanel">
+                            <h6 class="mb-3">Using the Global Search</h6>
+                            <div class="alert alert-info">
+                                <i data-feather="info" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: text-bottom;"></i>
+                                <strong>Quick Search:</strong> Type any keywords to search across all modules instantly
+                            </div>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h6 class="mb-1"><i data-feather="users" style="width: 14px; height: 14px; margin-right: 5px; vertical-align: text-bottom;"></i> Search Clients</h6>
+                                    <p class="mb-0 text-muted">Type client name, email, or phone number</p>
+                                </div>
+                                <div class="list-group-item">
+                                    <h6 class="mb-1"><i data-feather="box" style="width: 14px; height: 14px; margin-right: 5px; vertical-align: text-bottom;"></i> Search Products</h6>
+                                    <p class="mb-0 text-muted">Find products by name or SKU code</p>
+                                </div>
+                                <div class="list-group-item">
+                                    <h6 class="mb-1"><i data-feather="file-text" style="width: 14px; height: 14px; margin-right: 5px; vertical-align: text-bottom;"></i> Search Invoices</h6>
+                                    <p class="mb-0 text-muted">Look up invoice numbers or dates</p>
+                                </div>
+                                <div class="list-group-item">
+                                    <h6 class="mb-1"><i data-feather="layout" style="width: 14px; height: 14px; margin-right: 5px; vertical-align: text-bottom;"></i> Search Contracts</h6>
+                                    <p class="mb-0 text-muted">Find rental contracts and agreements</p>
+                                </div>
+                            </div>
+                            <div class="alert alert-warning mt-3 mb-0">
+                                <strong>💡 Tip:</strong> Press Enter or wait for suggestions to appear automatically
+                            </div>
+                        </div>
+
+                        <!-- Modules Help -->
+                        <div class="tab-pane fade" id="modulesHelp" role="tabpanel">
+                            <h6 class="mb-4">Click on each module to learn more:</h6>
+                            <div class="accordion" id="modulesAccordion">
+                                <!-- Sales Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salesModule" style="padding: 15px;">
+                                            <i data-feather="shopping-cart" style="color: #667eea; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Sales Management</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="salesModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Manage your sales operations:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Create and track invoices</li>
+                                                <li>Manage sales orders and quotations</li>
+                                                <li>Track payments and outstanding amounts</li>
+                                                <li>Generate sales reports</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Inventory Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inventoryModule" style="padding: 15px;">
+                                            <i data-feather="box" style="color: #764ba2; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Inventory Management</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="inventoryModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Track and manage inventory:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Monitor stock levels in real-time</li>
+                                                <li>Manage warehouses and storage locations</li>
+                                                <li>Create purchase orders for suppliers</li>
+                                                <li>Generate inventory reports and forecasts</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- CRM Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#crmModule" style="padding: 15px;">
+                                            <i data-feather="users" style="color: #f093fb; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Customer Relationship Management</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="crmModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Manage customer interactions:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Maintain comprehensive client database</li>
+                                                <li>Track customer interactions and communications</li>
+                                                <li>Manage contracts and agreements</li>
+                                                <li>View customer history and preferences</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Accounting Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accountingModule" style="padding: 15px;">
+                                            <i data-feather="calculator" style="color: #4facfe; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Accounting & Finance</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="accountingModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Manage financial operations:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Track expenses and costs</li>
+                                                <li>Monitor cash flow and projections</li>
+                                                <li>Generate financial reports</li>
+                                                <li>Manage budgets and forecasts</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Production Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productionModule" style="padding: 15px;">
+                                            <i data-feather="hard-hat" style="color: #fa709a; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Production Management</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="productionModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Manage manufacturing operations:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Create and track work orders</li>
+                                                <li>Monitor production schedules</li>
+                                                <li>Track labor and resources</li>
+                                                <li>Generate production reports</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Quality Module -->
+                                <div class="accordion-item" style="border: 1px solid #e0e0e0; margin-bottom: 10px; border-radius: 8px;">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#qualityModule" style="padding: 15px;">
+                                            <i data-feather="check-circle" style="color: #30b0fe; width: 20px; height: 20px; margin-right: 10px;"></i>
+                                            <strong>Quality Control</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="qualityModule" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body" style="background: #f9f9f9;">
+                                            <p><strong>Ensure product quality:</strong></p>
+                                            <ul class="mb-0">
+                                                <li>Create quality control procedures</li>
+                                                <li>Track inspection results</li>
+                                                <li>Document defects and corrections</li>
+                                                <li>Monitor compliance standards</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Features Help -->
+                        <div class="tab-pane fade" id="featuresHelp" role="tabpanel">
+                            <h6 class="mb-3">Key Features</h6>
+                            <div class="accordion" id="featureAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#darkMode">
+                                            <i data-feather="moon" style="width: 16px; height: 16px; margin-right: 8px;"></i> Dark Mode
+                                        </button>
+                                    </h2>
+                                    <div id="darkMode" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                        <div class="accordion-body">
+                                            <p>Toggle dark/light mode for comfortable viewing at any time. Your preference is saved automatically.</p>
+                                            <small class="text-muted">Look for the theme toggle button in the top navigation bar</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reporting">
+                                            <i data-feather="bar-chart-2" style="width: 16px; height: 16px; margin-right: 8px;"></i> Advanced Reporting
+                                        </button>
+                                    </h2>
+                                    <div id="reporting" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                        <div class="accordion-body">
+                                            <p>Generate detailed reports on sales, inventory, finances, and more. Export data to Excel or PDF format.</p>
+                                            <small class="text-muted">Navigate to Reports section to access all available reports</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#realtime">
+                                            <i data-feather="activity" style="width: 16px; height: 16px; margin-right: 8px;"></i> Real-time Analytics
+                                        </button>
+                                    </h2>
+                                    <div id="realtime" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                        <div class="accordion-body">
+                                            <p>Monitor KPIs, sales trends, inventory levels, and performance metrics in real-time on the dashboard.</p>
+                                            <small class="text-muted">Dashboard updates automatically as data changes</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#permissions">
+                                            <i data-feather="lock" style="width: 16px; height: 16px; margin-right: 8px;"></i> Role-Based Access
+                                        </button>
+                                    </h2>
+                                    <div id="permissions" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                        <div class="accordion-body">
+                                            <p>Different user roles have different access levels. Admin can manage users and permissions from Settings.</p>
+                                            <small class="text-muted">Contact your administrator for access changes</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shortcuts & Tips -->
+                        <div class="tab-pane fade" id="shortcutsHelp" role="tabpanel">
+                            <h6 class="mb-3">Useful Tips & Shortcuts</h6>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">Search Anywhere</h6>
+                                            <p class="mb-0 text-muted">Use the search bar at the top to quickly find clients, products, invoices, and more</p>
+                                        </div>
+                                        <kbd>Ctrl + K</kbd>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">Clear Filters</h6>
+                                            <p class="mb-0 text-muted">Click the X button in search field to clear and start fresh</p>
+                                        </div>
+                                        <i data-feather="x-circle" style="width: 18px; height: 18px;"></i>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">Hover for Details</h6>
+                                            <p class="mb-0 text-muted">Many items have tooltips - hover over them to see more information</p>
+                                        </div>
+                                        <i data-feather="info" style="width: 18px; height: 18px;"></i>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">Mobile Navigation</h6>
+                                            <p class="mb-0 text-muted">On mobile, tap the menu icon to access all modules and features</p>
+                                        </div>
+                                        <i data-feather="menu" style="width: 18px; height: 18px;"></i>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">Save Your Preferences</h6>
+                                            <p class="mb-0 text-muted">Dark mode, language, and other preferences are saved in your browser</p>
+                                        </div>
+                                        <i data-feather="settings" style="width: 18px; height: 18px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #f0f0f0;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Help Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchForm = document.getElementById('searchForm');
+            const clearBtn = document.getElementById('clearSearch');
+            const suggestionsBox = document.getElementById('searchSuggestions');
+
+            if (!searchInput) return;
+
+            // Show/hide clear button
+            searchInput.addEventListener('input', function() {
+                clearBtn.style.display = this.value ? 'block' : 'none';
+            });
+
+            // Clear search
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
+                suggestionsBox.style.display = 'none';
+                searchInput.focus();
+            });
+
+            // Search suggestions
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                if (!query || query.length < 2) {
+                    suggestionsBox.style.display = 'none';
+                    return;
+                }
+
+                // Fetch suggestions
+                fetch(`/api/search/suggestions/?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .catch(() => {
+                        // Fallback: show generic suggestions
+                        showGenericSuggestions(query);
+                    })
+                    .then(data => {
+                        if (data) displaySuggestions(data);
+                    });
+            });
+
+            function showGenericSuggestions(query) {
+                const items = [
+                    { icon: 'users', label: 'Search Clients', value: query },
+                    { icon: 'box', label: 'Search Products', value: query },
+                    { icon: 'file-text', label: 'Search Invoices', value: query },
+                    { icon: 'layout', label: 'Search Contracts', value: query }
+                ];
+                displaySuggestions(items);
+            }
+
+            function displaySuggestions(items) {
+                suggestionsBox.innerHTML = '';
+                
+                if (!items || items.length === 0) {
+                    suggestionsBox.innerHTML = '<div class="list-group-item text-muted">No suggestions found</div>';
+                    suggestionsBox.style.display = 'block';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'list-group-item list-group-item-action';
+                    div.style.cursor = 'pointer';
+                    div.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i data-feather="${item.icon || 'search'}" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: text-bottom;"></i>
+                                <span>${item.label || item.title || item.name}</span>
+                            </div>
+                            ${item.subtitle ? `<small class="text-muted">${item.subtitle}</small>` : ''}
+                        </div>
+                    `;
+                    div.addEventListener('click', () => {
+                        searchInput.value = item.value || item.label;
+                        searchForm.submit();
+                    });
+                    suggestionsBox.appendChild(div);
+                });
+
+                // Add "Press Enter to search" item
+                const enterDiv = document.createElement('div');
+                enterDiv.className = 'list-group-item text-muted text-center py-2';
+                enterDiv.style.fontSize = '12px';
+                enterDiv.innerHTML = 'Press <kbd>Enter</kbd> to see all results';
+                suggestionsBox.appendChild(enterDiv);
+
+                suggestionsBox.style.display = 'block';
+                if (window.feather) feather.replace();
+            }
+
+            // Close suggestions on outside click
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && !suggestionsBox.contains(e.target)) {
+                    suggestionsBox.style.display = 'none';
+                }
+            });
+
+            // Re-render feather icons in help modal
+            const helpModal = document.getElementById('helpModal');
+            if (helpModal) {
+                helpModal.addEventListener('show.bs.modal', function() {
+                    setTimeout(() => {
+                        if (window.feather) feather.replace();
+                    }, 100);
+                });
+            }
+        });
+    </script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

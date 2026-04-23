@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reports - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4"><i data-feather="bar-chart-2"></i> Reports Dashboard</h1>
+    
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Sales</h6>
+                    <h3>{{ total_sales }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Products</h6>
+                    <h3>{{ total_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Rentals</h6>
+                    <h3>{{ total_rentals }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <a href="{% url 'sales_report' %}" class="btn btn-primary me-2">Sales Report</a>
+            <a href="{% url 'inventory_report' %}" class="btn btn-secondary">Inventory Report</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

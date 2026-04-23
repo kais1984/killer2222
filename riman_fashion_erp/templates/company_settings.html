@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Settings - RIAMAN ERP{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i data-feather="settings"></i> Company Settings</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Company Logo Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="image"></i> Company Logo</h5>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    {% if object.logo %}
+                                        <img src="{{ object.logo.url }}" alt="Company Logo" class="card-img-top" style="max-height: 200px; object-fit: contain; padding: 10px;">
+                                    {% else %}
+                                        <div class="card-body text-center text-muted" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                            <p>No logo uploaded</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <label for="id_logo" class="form-label">Upload Logo</label>
+                                    {{ form.logo }}
+                                    <small class="form-text text-muted">Recommended size: 200x100px. Supported formats: JPG, PNG, GIF</small>
+                                    {% if form.logo.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.logo.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Company Info Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="building"></i> Company Information</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_company_name" class="form-label">Company Name</label>
+                                {{ form.company_name }}
+                                {% if form.company_name.errors %}<div class="invalid-feedback d-block">{{ form.company_name.errors }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_phone" class="form-label">Phone</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}<div class="invalid-feedback d-block">{{ form.phone.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_email" class="form-label">Email</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<div class="invalid-feedback d-block">{{ form.email.errors }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_address" class="form-label">Address</label>
+                                {{ form.address }}
+                                {% if form.address.errors %}<div class="invalid-feedback d-block">{{ form.address.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="id_city" class="form-label">City</label>
+                                {{ form.city }}
+                                {% if form.city.errors %}<div class="invalid-feedback d-block">{{ form.city.errors }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_state" class="form-label">State</label>
+                                {{ form.state }}
+                                {% if form.state.errors %}<div class="invalid-feedback d-block">{{ form.state.errors }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_country" class="form-label">Country</label>
+                                {{ form.country }}
+                                {% if form.country.errors %}<div class="invalid-feedback d-block">{{ form.country.errors }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_postal_code" class="form-label">Postal Code</label>
+                                {{ form.postal_code }}
+                                {% if form.postal_code.errors %}<div class="invalid-feedback d-block">{{ form.postal_code.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Appearance Section -->
+                        <div class="row mb-4 mt-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="sliders"></i> Appearance</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_brand_color" class="form-label">Brand Color</label>
+                                <div class="input-group">
+                                    {{ form.brand_color }}
+                                    <span class="input-group-text" id="brand_color_preview" style="width: 50px; background-color: #2c3e50;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_accent_color" class="form-label">Accent Color</label>
+                                <div class="input-group">
+                                    {{ form.accent_color }}
+                                    <span class="input-group-text" id="accent_color_preview" style="width: 50px; background-color: #e74c3c;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Settings -->
+                        <div class="row mb-4 mt-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="dollar-sign"></i> Financial Settings</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="id_currency_symbol" class="form-label">Currency Symbol</label>
+                                {{ form.currency_symbol }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_currency_code" class="form-label">Currency Code</label>
+                                {{ form.currency_code }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_tax_type" class="form-label">Tax Type</label>
+                                {{ form.tax_type }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_tax_rate" class="form-label">Tax Rate (%)</label>
+                                {{ form.tax_rate }}
+                            </div>
+                        </div>
+
+                        <!-- Invoice Settings -->
+                        <div class="row mb-4 mt-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="file-text"></i> Invoice Settings</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="id_invoice_prefix" class="form-label">Invoice Prefix</label>
+                                {{ form.invoice_prefix }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="id_invoice_next_number" class="form-label">Next Invoice Number</label>
+                                {{ form.invoice_next_number }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="id_financial_year_start" class="form-label">Financial Year Start (MM-DD)</label>
+                                {{ form.financial_year_start }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_invoice_footer" class="form-label">Invoice Footer</label>
+                            {{ form.invoice_footer }}
+                        </div>
+
+                        <!-- Inventory Settings -->
+                        <div class="row mb-4 mt-4">
+                            <div class="col-md-12">
+                                <h5 class="border-bottom pb-2"><i data-feather="package"></i> Inventory Settings</h5>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="id_low_stock_threshold" class="form-label">Low Stock Threshold (Units)</label>
+                            {{ form.low_stock_threshold }}
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="row mt-5">
+                            <div class="col-md-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i data-feather="save"></i> Save Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Update color previews
+    document.getElementById('id_brand_color').addEventListener('change', function() {
+        document.getElementById('brand_color_preview').style.backgroundColor = this.value;
+    });
+    
+    document.getElementById('id_accent_color').addEventListener('change', function() {
+        document.getElementById('accent_color_preview').style.backgroundColor = this.value;
+    });
+</script>
+{% endblock %}

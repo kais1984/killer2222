@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sales - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Sales</h1>
+            <p class="text-muted"><small>Create sales which automatically generate invoices.</small></p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'sale_add' %}" class="btn btn-primary">
+                <i data-feather="plus"></i> Create Sale
+            </a>
+        </div>
+    </div>
+    
+    <!-- Mobile: Card View -->
+    <div class="d-md-none">
+        {% for sale in sales %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6 class="card-title">
+                    Sale #{{ sale.sale_number }}
+                    {% if sale.customer %}
+                    <small class="text-muted">- {{ sale.customer.first_name }} {{ sale.customer.last_name }}</small>
+                    {% endif %}
+                </h6>
+                <p class="card-text mb-2">
+                    <strong class="text-success">${{ sale.total_amount|floatformat:2 }}</strong>
+                    <br>
+                    <small class="text-muted">{{ sale.sale_date|date:"M d, Y" }}</small>
+                </p>
+                <div class="btn-group btn-group-sm w-100">
+                    <a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-outline-primary" title="View"><i data-feather="eye"></i> View</a>
+                    <a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-outline-secondary" title="Print"><i data-feather="printer"></i> Print</a>
+                    {% if not sale.invoice %}<a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-outline-warning" title="Edit"><i data-feather="edit"></i> Edit</a>{% endif %}
+                    <button type="button" class="btn btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ sale.id }}"><i data-feather="trash-2"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">No sales found. Create one to get started.</div>
+        {% endfor %}
+    </div>
+    
+    <!-- Desktop: Table View -->
+    <table class="table table-striped d-none d-md-table">
+        <thead>
+            <tr>
+                <th>Sale #</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Items</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.sale_number }}</td>
+                <td>
+                    {% if sale.customer %}
+                    {{ sale.customer.first_name }} {{ sale.customer.last_name }}
+                    {% else %}
+                    <span class="text-muted">N/A</span>
+                    {% endif %}
+                </td>
+                <td>${{ sale.total_amount|floatformat:2 }}</td>
+                <td>{{ sale.lines.count }} items</td>
+                <td>{{ sale.sale_date|date:"M d, Y" }}</td>
+                <td>
+                    <a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-sm btn-outline-primary" title="View"><i data-feather="eye"></i></a>
+                    <a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-sm btn-outline-secondary" title="Print"><i data-feather="printer"></i></a>
+                    {% if not sale.invoice %}<a href="{% url 'sale_detail' pk=sale.id %}" class="btn btn-sm btn-outline-warning" title="Edit"><i data-feather="edit"></i></a>{% endif %}
+                    <button type="button" class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ sale.id }}"><i data-feather="trash-2"></i></button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center">No sales found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item active">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+<!-- Delete Modals for each sale -->
+{% for sale in sales %}
+<div class="modal fade" id="deleteModal{{ sale.id }}" tabindex="-1" aria-labelledby="deleteLabel{{ sale.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteLabel{{ sale.id }}">Delete Sale?</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <strong>Sale {{ sale.sale_number }}</strong>? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="/sales/{{ sale.id }}/delete/" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

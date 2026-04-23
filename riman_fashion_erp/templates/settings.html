@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}System Settings - RIMAN FASHION ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mb-4"><i data-feather="settings"></i> System Settings</h1>
+        </div>
+    </div>
+
+    {% if company %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Company Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Company Name</label>
+                        <p class="form-control-plaintext"><strong>{{ company.company_name }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Email</label>
+                        <p class="form-control-plaintext"><strong>{{ company.email }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Phone</label>
+                        <p class="form-control-plaintext"><strong>{{ company.phone }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Address</label>
+                        <p class="form-control-plaintext"><strong>{{ company.address|default:"Not set" }}</strong></p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">City</label>
+                                <p class="form-control-plaintext"><strong>{{ company.city|default:"N/A" }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">State</label>
+                                <p class="form-control-plaintext"><strong>{{ company.state|default:"N/A" }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Country</label>
+                                <p class="form-control-plaintext"><strong>{{ company.country|default:"N/A" }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Postal Code</label>
+                                <p class="form-control-plaintext"><strong>{{ company.postal_code|default:"N/A" }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Financial Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Currency Code</label>
+                        <p class="form-control-plaintext"><strong>{{ company.currency_code }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Currency Symbol</label>
+                        <p class="form-control-plaintext"><strong>{{ company.currency_symbol }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Tax Type</label>
+                        <p class="form-control-plaintext"><strong>{{ company.get_tax_type_display }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Tax Rate</label>
+                        <p class="form-control-plaintext"><strong>{{ company.tax_rate }}%</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Invoice Prefix</label>
+                        <p class="form-control-plaintext"><strong>{{ company.invoice_prefix }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Next Invoice Number</label>
+                        <p class="form-control-plaintext"><strong>#{{ company.invoice_next_number }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">System Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Financial Year Start</label>
+                        <p class="form-control-plaintext"><strong>{{ company.financial_year_start }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Low Stock Threshold</label>
+                        <p class="form-control-plaintext"><strong>{{ company.low_stock_threshold }} units</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Brand Color</label>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 40px; height: 40px; background-color: {{ company.brand_color }}; border-radius: 4px; margin-right: 10px;"></div>
+                            <p class="form-control-plaintext"><strong>{{ company.brand_color }}</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Accent Color</label>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 40px; height: 40px; background-color: {{ company.accent_color }}; border-radius: 4px; margin-right: 10px;"></div>
+                            <p class="form-control-plaintext"><strong>{{ company.accent_color }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Invoice Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Invoice Footer Text</label>
+                        <p class="form-control-plaintext"><small>{{ company.invoice_footer|default:"No footer text" }}</small></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Last Updated</label>
+                        <p class="form-control-plaintext"><strong>{{ company.updated_at|date:"M d, Y H:i" }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Management</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'admin:core_companysettings_change' company.id %}" class="btn btn-primary">
+                        <i data-feather="edit"></i> Edit Settings
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="btn btn-secondary">
+                        <i data-feather="settings"></i> Admin Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        <strong>No settings configured yet.</strong>
+        <a href="{% url 'admin:core_companysettings_add' %}" class="btn btn-sm btn-warning">Create Company Settings</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

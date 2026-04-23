@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sales Report - RIMAN FASHION ERP{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1><i data-feather="bar-chart-2"></i> Sales Report</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'sales_report_pdf' %}?date_from={{ date_from }}&date_to={{ date_to }}" class="btn btn-danger">
+                <i data-feather="file-text" class="text-danger"></i> PDF
+            </a>
+            <a href="{% url 'sales_report_excel' %}?date_from={{ date_from }}&date_to={{ date_to }}" class="btn btn-success">
+                <i data-feather="file-text" class="text-success"></i> Excel
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="date_from" class="form-label">From Date</label>
+                            <input type="date" id="date_from" name="date_from" class="form-control" value="{{ date_from }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="date_to" class="form-label">To Date</label>
+                            <input type="date" id="date_to" name="date_to" class="form-control" value="{{ date_to }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i data-feather="search"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Sales</h6>
+                    <h3 class="text-primary">{{ total_sales }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Revenue</h6>
+                    <h3 class="text-success">${{ total_revenue|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Avg Transaction</h6>
+                    <h3 class="text-info">${{ avg_transaction|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Items Sold</h6>
+                    <h3 class="text-warning">{{ total_items }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Top Customers -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="users"></i> Top Customers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for customer, data in top_customers.items %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="mb-1">{{ customer }}</h6>
+                                    <small class="text-muted">{{ data.count }} purchase{{ data.count|pluralize }}</small>
+                                </div>
+                                <strong>${{ data.total|floatformat:2 }}</strong>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center text-muted py-4">No sales data</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sales Timeline -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="activity"></i> Sales Timeline</h5>
+                </div>
+                <div class="card-body">
+                    {% for sale in sales %}
+                    <div class="d-flex justify-content-between align-items-center mb-3" style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <div>
+                            <h6 class="mb-1">{{ sale.sale_number }}</h6>
+                            <small class="text-muted">{{ sale.sale_date|date:"M d, Y H:i" }}</small>
+                        </div>
+                        <div class="text-end">
+                            <strong>${{ sale.total_amount|floatformat:2 }}</strong><br>
+                            <small class="text-muted">{{ sale.customer.first_name }} {{ sale.customer.last_name }}</small>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-muted py-4">No sales in this period</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Detailed Sales Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i data-feather="list"></i> Detailed Sales List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sale #</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Subtotal</th>
+                                    <th>Tax</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sale in sales %}
+                                <tr>
+                                    <td><strong>{{ sale.sale_number }}</strong></td>
+                                    <td>{{ sale.customer.first_name }} {{ sale.customer.last_name }}</td>
+                                    <td>{{ sale.sale_date|date:"m/d/Y" }}</td>
+                                    <td>{{ sale.lines.count }}</td>
+                                    <td>${{ sale.subtotal|floatformat:2 }}</td>
+                                    <td>${{ sale.tax_amount|floatformat:2 }}</td>
+                                    <td><strong>${{ sale.total_amount|floatformat:2 }}</strong></td>
+                                    <td>
+                                        {% if sale.payment_status == 'Paid' %}
+                                        <span class="badge bg-success">Paid</span>
+                                        {% elif sale.payment_status == 'Partial' %}
+                                        <span class="badge bg-warning">Partial</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Unpaid</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-4">No sales found for the selected period</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
