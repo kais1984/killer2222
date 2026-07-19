@@ -8,6 +8,13 @@ import 'package:logestic_app/screens/service_form_screen.dart';
 void main() {
   testWidgets('each dropdown item shows its ServiceLog.iconFor icon',
       (tester) async {
+    tester.view.physicalSize = const Size(800, 4000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     final provider = LogProvider();
     await tester.pumpWidget(
       ChangeNotifierProvider<LogProvider>.value(
