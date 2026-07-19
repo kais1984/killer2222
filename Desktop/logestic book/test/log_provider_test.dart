@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logestic_app/models/daily_log.dart';
 import 'package:logestic_app/providers/log_provider.dart';
