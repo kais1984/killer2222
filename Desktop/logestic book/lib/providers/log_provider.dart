@@ -92,4 +92,9 @@ class LogProvider extends ChangeNotifier {
   void setDailyLogsForTest(List<DailyLog> logs) {
     _dailyLogs = logs;
   }
+
+  @visibleForTesting
+  void setServicesForTest(List<ServiceLog> svcs) {
+    _services = svcs;
+  }
 }
