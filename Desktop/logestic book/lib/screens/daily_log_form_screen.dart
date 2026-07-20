@@ -99,7 +99,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
             const SizedBox(height: 16),
             _buildTextField(
               controller: _costCtrl,
-              label: 'Cost (DZD)',
+              label: 'Cost (AED)',
               icon: Icons.monetization_on,
               keyboardType: TextInputType.number,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,

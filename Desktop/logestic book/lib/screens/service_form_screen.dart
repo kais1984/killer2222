@@ -80,7 +80,7 @@ class _ServiceFormScreenState extends State<ServiceFormScreen> {
             const SizedBox(height: 16),
             _buildTextField(
               controller: _costCtrl,
-              label: 'Cost (DZD)',
+              label: 'Cost (AED)',
               icon: Icons.monetization_on,
               keyboardType: TextInputType.number,
               validator: (v) =>
