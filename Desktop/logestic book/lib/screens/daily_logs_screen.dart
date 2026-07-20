@@ -103,7 +103,7 @@ class DailyLogsScreen extends StatelessWidget {
                                 style: AppTheme.bigNumber.copyWith(color: AppTheme.accentBright, fontSize: 22)),
                             Text('KM', style: AppTheme.sectionLabel),
                             const SizedBox(height: 4),
-                            Text('${log.cost.toStringAsFixed(0)} AED', style: AppTheme.caption),
+                            Text('${provider.dailyCostForDate(log.date).toStringAsFixed(0)} AED', style: AppTheme.caption),
                           ],
                         ),
                       ],

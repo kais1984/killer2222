@@ -21,6 +21,9 @@ class HomeScreen extends StatelessWidget {
           final now = DateTime.now();
           final dateStr = DateFormat('EEE  ·  MMM d').format(now).toUpperCase();
           final timeStr = DateFormat('HH:mm').format(now);
+          final todayCost = todayLog != null
+              ? provider.dailyCostForDate(todayLog.date)
+              : provider.dailyCostForDate(now);
 
           return Stack(
             children: [
@@ -38,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                     _TopBar(timeStr: timeStr, dateStr: dateStr, hasLog: todayLog != null),
                     const SizedBox(height: 24),
                     if (todayLog != null) ...[
-                      _OdometerCluster(log: todayLog),
+                      _OdometerCluster(log: todayLog, todayCost: todayCost),
                       const SizedBox(height: 24),
                     ] else
                       _NoEntryCluster(onNew: () {
@@ -139,14 +142,14 @@ class _StatusLight extends StatelessWidget {
 
 class _OdometerCluster extends StatelessWidget {
   final dynamic log;
-  const _OdometerCluster({required this.log});
+  final double todayCost;
+  const _OdometerCluster({required this.log, required this.todayCost});
 
   @override
   Widget build(BuildContext context) {
     final start = log.startKm.toStringAsFixed(0);
     final end = log.endKm.toStringAsFixed(0);
     final total = log.totalKm.toStringAsFixed(0);
-    final cost = log.cost.toStringAsFixed(0);
 
     return _Bezel(
       label: 'TODAY · ODOMETER',
@@ -185,9 +188,10 @@ class _OdometerCluster extends StatelessWidget {
           // Cost bar.
           Row(
             children: [
-              Text('FUEL · COST', style: AppTheme.sectionLabel),
+              Text('TODAY · SPENT', style: AppTheme.sectionLabel),
               const Spacer(),
-              Text('$cost AED', style: AppTheme.bigNumber.copyWith(color: AppTheme.accentBright)),
+              Text('${todayCost.toStringAsFixed(0)} AED',
+                  style: AppTheme.bigNumber.copyWith(color: AppTheme.accentBright)),
             ],
           ),
           const SizedBox(height: 12),
@@ -235,7 +239,7 @@ class _NoEntryCluster extends StatelessWidget {
           Text('000000', style: AppTheme.hugeNumber.copyWith(color: AppTheme.tickDim)),
           const SizedBox(height: 12),
           Text(
-            'Tap to record today\'s Start KM, End KM, and Cost.',
+            'Tap to record today\'s Start KM and End KM. Add service entries (e.g. Petrol Refill) to record spending.',
             style: AppTheme.bodyText.copyWith(color: AppTheme.displayDim),
           ),
           const SizedBox(height: 16),

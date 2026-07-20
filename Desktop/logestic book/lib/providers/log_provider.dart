@@ -27,6 +27,28 @@ class LogProvider extends ChangeNotifier {
     }
   }
 
+  /// Sum of all Service costs on the calendar day of [date].
+  /// The Daily Log no longer carries a cost; this is the source of truth.
+  double dailyCostForDate(DateTime date) {
+    final d = DateTime(date.year, date.month, date.day);
+    double total = 0;
+    for (final s in _services) {
+      if (s.date.year == d.year && s.date.month == d.month && s.date.day == d.day) {
+        total += s.cost;
+      }
+    }
+    return total;
+  }
+
+  /// Sum of all Service costs in the given month.
+  double monthlyCost(int year, int month) {
+    double total = 0;
+    for (final s in _services) {
+      if (s.date.year == year && s.date.month == month) total += s.cost;
+    }
+    return total;
+  }
+
   void startListening() {
     _firestore.getDailyLogs().listen((logs) {
       _dailyLogs = logs;

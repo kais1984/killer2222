@@ -45,6 +45,10 @@ class DailyLog {
   final double startKm;
   final double endKm;
   final double totalKm;
+  /// DEPRECATED: cost is no longer tracked on the daily log. The day's total
+  /// spending is the sum of all Service entries on that calendar day, exposed
+  /// via `LogProvider.dailyCostForDate`. This field stays for backward
+  /// compatibility with existing Firestore documents; new writes omit it.
   final double cost;
   final String notes;
   final List<PlacePin> pins;
@@ -55,7 +59,7 @@ class DailyLog {
     required this.startKm,
     required this.endKm,
     required this.totalKm,
-    required this.cost,
+    this.cost = 0,
     this.notes = '',
     this.pins = const [],
   });
@@ -65,13 +69,14 @@ class DailyLog {
     final pins = pinsRaw is List
         ? pinsRaw.cast<Map<String, dynamic>>().map(PlacePin.fromMap).toList()
         : <PlacePin>[];
+    final costRaw = map['cost'];
     return DailyLog(
       id: map['id'] as String? ?? '',
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       startKm: (map['startKm'] as num).toDouble(),
       endKm: (map['endKm'] as num).toDouble(),
       totalKm: (map['totalKm'] as num).toDouble(),
-      cost: (map['cost'] as num).toDouble(),
+      cost: costRaw is num ? costRaw.toDouble() : 0,
       notes: map['notes'] as String? ?? '',
       pins: pins,
     );
@@ -83,7 +88,7 @@ class DailyLog {
         'startKm': startKm,
         'endKm': endKm,
         'totalKm': totalKm,
-        'cost': cost,
+        // cost deliberately omitted: derived from services at display time.
         'notes': notes,
         'pins': pins.map((p) => p.toMap()).toList(),
       };

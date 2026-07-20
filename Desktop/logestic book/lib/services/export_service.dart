@@ -22,22 +22,28 @@ class ExportService {
       TextCellValue('Start KM'),
       TextCellValue('End KM'),
       TextCellValue('Total KM'),
-      TextCellValue('Cost (AED)'),
+      TextCellValue('Spent (AED)'),
       TextCellValue('Notes'),
     ]);
 
-    double totalDailyCost = 0;
+    double totalSpent = 0;
     double totalKm = 0;
     for (final log in dailyLogs) {
+      final dayCost = services
+          .where((s) =>
+              s.date.year == log.date.year &&
+              s.date.month == log.date.month &&
+              s.date.day == log.date.day)
+          .fold<double>(0, (sum, s) => sum + s.cost);
       dailySheet.appendRow([
         TextCellValue(DateFormat('yyyy-MM-dd').format(log.date)),
         TextCellValue(log.startKm.toStringAsFixed(0)),
         TextCellValue(log.endKm.toStringAsFixed(0)),
         TextCellValue(log.totalKm.toStringAsFixed(0)),
-        TextCellValue(log.cost.toStringAsFixed(2)),
+        TextCellValue(dayCost.toStringAsFixed(2)),
         TextCellValue(log.notes),
       ]);
-      totalDailyCost += log.cost;
+      totalSpent += dayCost;
       totalKm += log.totalKm;
     }
 
@@ -50,7 +56,6 @@ class ExportService {
       TextCellValue('Notes'),
     ]);
 
-    double totalSvcCost = 0;
     for (final svc in services) {
       svcSheet.appendRow([
         TextCellValue(DateFormat('yyyy-MM-dd').format(svc.date)),
@@ -59,7 +64,6 @@ class ExportService {
         TextCellValue(svc.cost.toStringAsFixed(2)),
         TextCellValue(svc.notes),
       ]);
-      totalSvcCost += svc.cost;
     }
 
     final summarySheet = excel['Summary'];
@@ -70,17 +74,8 @@ class ExportService {
       TextCellValue(totalKm.toStringAsFixed(0)),
     ]);
     summarySheet.appendRow([
-      TextCellValue('Total Daily Cost'),
-      TextCellValue('${totalDailyCost.toStringAsFixed(2)} AED'),
-    ]);
-    summarySheet.appendRow([
-      TextCellValue('Total Service Cost'),
-      TextCellValue('${totalSvcCost.toStringAsFixed(2)} AED'),
-    ]);
-    summarySheet.appendRow([
-      TextCellValue('Grand Total'),
-      TextCellValue(
-          '${(totalDailyCost + totalSvcCost).toStringAsFixed(2)} AED'),
+      TextCellValue('Total Spent'),
+      TextCellValue('${totalSpent.toStringAsFixed(2)} AED'),
     ]);
     summarySheet.appendRow([
       TextCellValue('Total Services'),

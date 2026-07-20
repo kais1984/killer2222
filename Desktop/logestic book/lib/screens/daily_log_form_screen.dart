@@ -18,7 +18,6 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _startKmCtrl;
   late TextEditingController _endKmCtrl;
-  late TextEditingController _costCtrl;
   late TextEditingController _notesCtrl;
   late DateTime _selectedDate;
   bool _isEditing = false;
@@ -35,8 +34,6 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
         text: widget.existingLog?.startKm.toStringAsFixed(0) ?? '');
     _endKmCtrl = TextEditingController(
         text: widget.existingLog?.endKm.toStringAsFixed(0) ?? '');
-    _costCtrl = TextEditingController(
-        text: widget.existingLog?.cost.toStringAsFixed(2) ?? '');
     _notesCtrl =
         TextEditingController(text: widget.existingLog?.notes ?? '');
     _pins = widget.existingLog?.pins.toList() ?? [];
@@ -65,7 +62,6 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
   void dispose() {
     _startKmCtrl.dispose();
     _endKmCtrl.dispose();
-    _costCtrl.dispose();
     _notesCtrl.dispose();
     super.dispose();
   }
@@ -100,7 +96,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
             const SizedBox(height: 16),
             _buildKmSection(totalKm),
             const SizedBox(height: 12),
-            _buildCostField(),
+            _buildDailyCostSummary(),
             const SizedBox(height: 12),
             PinnedPlacesCard(
               pins: _pins,
@@ -183,23 +179,11 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: _OdoField(
-                  controller: _startKmCtrl,
-                  label: 'START',
-                  onChanged: (_) => setState(() {}),
-                ),
-              ),
+              Expanded(child: _odoInput(_startKmCtrl, 'START')),
               const SizedBox(width: 10),
               Icon(Icons.arrow_forward, color: AppTheme.displayDim, size: 18),
               const SizedBox(width: 10),
-              Expanded(
-                child: _OdoField(
-                  controller: _endKmCtrl,
-                  label: 'END',
-                  onChanged: (_) => setState(() {}),
-                ),
-              ),
+              Expanded(child: _odoInput(_endKmCtrl, 'END')),
             ],
           ),
           if (_autoFilledKm == null && _startKmCtrl.text.isEmpty)
@@ -233,7 +217,12 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
     );
   }
 
-  Widget _buildCostField() {
+  Widget _buildDailyCostSummary() {
+    // The daily log itself no longer carries a cost. The total is computed
+    // from all Service entries (petrol refills, oil changes, etc.) on the
+    // same calendar day as the log.
+    final provider = context.read<LogProvider>();
+    final cost = provider.dailyCostForDate(_selectedDate);
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       decoration: BoxDecoration(
@@ -244,27 +233,11 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
         children: [
           Container(width: 4, height: 4, color: AppTheme.accent),
           const SizedBox(width: 10),
-          Text('COST', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
-          const SizedBox(width: 14),
-          Expanded(
-            child: TextFormField(
-              controller: _costCtrl,
-              keyboardType: TextInputType.number,
-              style: AppTheme.bigNumber,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                filled: false,
-                hintText: '0',
-                hintStyle: TextStyle(color: AppTheme.tickDim),
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-              onChanged: (_) => setState(() {}),
-            ),
-          ),
+          Text('TODAY · SPENT', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+          const Spacer(),
+          Text(cost.toStringAsFixed(0),
+              style: AppTheme.bigNumber.copyWith(color: AppTheme.accentBright)),
+          const SizedBox(width: 6),
           Text('AED', style: AppTheme.sectionLabel),
         ],
       ),
@@ -327,7 +300,6 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
     final startKm = double.parse(_startKmCtrl.text);
     final endKm = double.parse(_endKmCtrl.text);
     final totalKm = endKm - startKm;
-    final cost = double.parse(_costCtrl.text);
     final provider = context.read<LogProvider>();
 
     final log = DailyLog(
@@ -336,7 +308,6 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
       startKm: startKm,
       endKm: endKm,
       totalKm: totalKm,
-      cost: cost,
       notes: _notesCtrl.text,
       pins: _pins,
     );
@@ -380,16 +351,11 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
       ),
     );
   }
-}
 
-/// Big monospaced odometer-style text field.
-class _OdoField extends StatelessWidget {
-  final TextEditingController controller;
-  final String label;
-  final ValueChanged<String>? onChanged;
-  const _OdoField({required this.controller, required this.label, this.onChanged});
-  @override
-  Widget build(BuildContext context) {
+  /// Big monospaced odometer-style text field. Returned as a plain
+  /// Container+TextFormField so it lives directly in the form's widget
+  /// tree (no extra StatefulWidget that would re-mount during tests).
+  Widget _odoInput(TextEditingController controller, String label) {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       decoration: BoxDecoration(
@@ -416,10 +382,11 @@ class _OdoField extends StatelessWidget {
               hintStyle: TextStyle(color: AppTheme.tickDim, fontSize: 28),
             ),
             validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-            onChanged: onChanged,
+            onChanged: (_) => setState(() {}),
           ),
         ],
       ),
     );
   }
 }
+

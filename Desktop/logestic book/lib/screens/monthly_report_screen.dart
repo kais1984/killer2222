@@ -48,12 +48,14 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<LogProvider>();
     final totalKm =
         _dailyLogs.fold<double>(0, (sum, l) => sum + l.totalKm);
-    final dailyCost =
-        _dailyLogs.fold<double>(0, (sum, l) => sum + l.cost);
+    // The cost of the month is the sum of all Service entries in it.
+    // The DailyLog no longer carries a cost (it would double-count the
+    // services that produced it). One source of truth: services.
     final svcCost = _services.fold<double>(0, (sum, s) => sum + s.cost);
-    final grandTotal = dailyCost + svcCost;
+    final grandTotal = svcCost;
 
     return Scaffold(
       appBar: AppBar(
@@ -111,8 +113,7 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSummaryGrid(
-                      totalKm, dailyCost, svcCost, grandTotal),
+                    _buildSummaryGrid(totalKm, grandTotal),
                   const SizedBox(height: 24),
                   _buildSectionHeader('Daily Trips',
                       '${_dailyLogs.length} entries'),
@@ -120,7 +121,7 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
                   if (_dailyLogs.isEmpty)
                     _buildEmptyState('No daily trips this month')
                   else
-                    ..._dailyLogs.map((l) => _buildDailyRow(l)),
+                    ..._dailyLogs.map((l) => _buildDailyRow(l, provider.dailyCostForDate(l.date))),
                   const SizedBox(height: 24),
                   _buildSectionHeader('Services',
                       '${_services.length} records'),
@@ -136,7 +137,7 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
   }
 
   Widget _buildSummaryGrid(
-      double totalKm, double dailyCost, double svcCost, double grandTotal) {
+      double totalKm, double grandTotal) {
     return Column(
       children: [
         Row(
@@ -147,14 +148,6 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(child: _StatBlock(label: 'TRIP COSTS', value: '${dailyCost.toStringAsFixed(0)} AED', accent: AppTheme.accentBright)),
-            const SizedBox(width: 8),
-            Expanded(child: _StatBlock(label: 'SERVICE COSTS', value: '${svcCost.toStringAsFixed(0)} AED', accent: AppTheme.accentBright)),
-          ],
-        ),
-        const SizedBox(height: 12),
         _GrandTotalBlock(amount: '${grandTotal.toStringAsFixed(0)} AED'),
       ],
     );
@@ -182,7 +175,7 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
     );
   }
 
-  Widget _buildDailyRow(DailyLog log) {
+  Widget _buildDailyRow(DailyLog log, double dayCost) {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -212,7 +205,7 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
           ),
           const SizedBox(width: 12),
           Text(
-            log.cost.toStringAsFixed(0),
+            dayCost.toStringAsFixed(0),
             style: AppTheme.smallNumber,
           ),
         ],
