@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:logestic_app/models/daily_log.dart';
 import 'package:logestic_app/providers/log_provider.dart';
 import 'package:logestic_app/theme/app_theme.dart';
+import 'package:logestic_app/widgets/pinned_places_card.dart';
 
 class DailyLogFormScreen extends StatefulWidget {
   final DailyLog? existingLog;
@@ -23,6 +24,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
   bool _isEditing = false;
   double? _autoFilledKm;
   bool _didPrefill = false;
+  late List<PlacePin> _pins;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
         text: widget.existingLog?.cost.toStringAsFixed(2) ?? '');
     _notesCtrl =
         TextEditingController(text: widget.existingLog?.notes ?? '');
+    _pins = widget.existingLog?.pins.toList() ?? [];
   }
 
   @override
@@ -103,6 +106,11 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
               icon: Icons.monetization_on,
               keyboardType: TextInputType.number,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+            ),
+            const SizedBox(height: 16),
+            PinnedPlacesCard(
+              pins: _pins,
+              onChanged: (newPins) => setState(() => _pins = newPins),
             ),
             const SizedBox(height: 16),
             _buildTextField(
@@ -301,6 +309,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
       totalKm: totalKm,
       cost: cost,
       notes: _notesCtrl.text,
+      pins: _pins,
     );
 
     if (_isEditing) {

@@ -5,7 +5,7 @@ class PlacePin {
   final DateTime timestamp;
   final String label;
 
-  PlacePin({
+  const PlacePin({
     required this.id,
     required this.lat,
     required this.lng,
@@ -13,41 +13,30 @@ class PlacePin {
     this.label = '',
   });
 
-  factory PlacePin.fromMap(Map<String, dynamic> map) {
-    return PlacePin(
-      id: map['id'] as String? ?? '',
-      lat: (map['lat'] as num).toDouble(),
-      lng: (map['lng'] as num).toDouble(),
-      timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp'] as int),
-      label: map['label'] as String? ?? '',
-    );
-  }
+  factory PlacePin.fromMap(Map<String, dynamic> m) => PlacePin(
+        id: m['id'] as String? ?? '',
+        lat: (m['lat'] as num).toDouble(),
+        lng: (m['lng'] as num).toDouble(),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(m['timestamp'] as int),
+        label: m['label'] as String? ?? '',
+      );
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'lat': lat,
-      'lng': lng,
-      'timestamp': timestamp.millisecondsSinceEpoch,
-      'label': label,
-    };
-  }
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'timestamp': timestamp.millisecondsSinceEpoch,
+        'label': label,
+      };
 
-  PlacePin copyWith({
-    String? id,
-    double? lat,
-    double? lng,
-    DateTime? timestamp,
-    String? label,
-  }) {
-    return PlacePin(
-      id: id ?? this.id,
-      lat: lat ?? this.lat,
-      lng: lng ?? this.lng,
-      timestamp: timestamp ?? this.timestamp,
-      label: label ?? this.label,
-    );
-  }
+  PlacePin copyWith({String? id, double? lat, double? lng, DateTime? timestamp, String? label}) =>
+      PlacePin(
+        id: id ?? this.id,
+        lat: lat ?? this.lat,
+        lng: lng ?? this.lng,
+        timestamp: timestamp ?? this.timestamp,
+        label: label ?? this.label,
+      );
 }
 
 class DailyLog {
@@ -72,6 +61,10 @@ class DailyLog {
   });
 
   factory DailyLog.fromMap(Map<String, dynamic> map) {
+    final pinsRaw = map['pins'];
+    final pins = pinsRaw is List
+        ? pinsRaw.cast<Map<String, dynamic>>().map(PlacePin.fromMap).toList()
+        : <PlacePin>[];
     return DailyLog(
       id: map['id'] as String? ?? '',
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
@@ -80,25 +73,20 @@ class DailyLog {
       totalKm: (map['totalKm'] as num).toDouble(),
       cost: (map['cost'] as num).toDouble(),
       notes: map['notes'] as String? ?? '',
-      pins: ((map['pins'] as List?)?.cast<Map<String, dynamic>>()
-              .map(PlacePin.fromMap)
-              .toList()) ??
-          const [],
+      pins: pins,
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'date': date.millisecondsSinceEpoch,
-      'startKm': startKm,
-      'endKm': endKm,
-      'totalKm': totalKm,
-      'cost': cost,
-      'notes': notes,
-      'pins': pins.map((p) => p.toMap()).toList(),
-    };
-  }
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'date': date.millisecondsSinceEpoch,
+        'startKm': startKm,
+        'endKm': endKm,
+        'totalKm': totalKm,
+        'cost': cost,
+        'notes': notes,
+        'pins': pins.map((p) => p.toMap()).toList(),
+      };
 
   DailyLog copyWith({
     String? id,
@@ -109,16 +97,15 @@ class DailyLog {
     double? cost,
     String? notes,
     List<PlacePin>? pins,
-  }) {
-    return DailyLog(
-      id: id ?? this.id,
-      date: date ?? this.date,
-      startKm: startKm ?? this.startKm,
-      endKm: endKm ?? this.endKm,
-      totalKm: totalKm ?? this.totalKm,
-      cost: cost ?? this.cost,
-      notes: notes ?? this.notes,
-      pins: pins ?? this.pins,
-    );
-  }
+  }) =>
+      DailyLog(
+        id: id ?? this.id,
+        date: date ?? this.date,
+        startKm: startKm ?? this.startKm,
+        endKm: endKm ?? this.endKm,
+        totalKm: totalKm ?? this.totalKm,
+        cost: cost ?? this.cost,
+        notes: notes ?? this.notes,
+        pins: pins ?? this.pins,
+      );
 }

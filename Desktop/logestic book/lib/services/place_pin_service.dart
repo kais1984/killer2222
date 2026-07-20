@@ -14,31 +14,27 @@ class PlacePinLocationFailed implements Exception {
   String toString() => message;
 }
 
-typedef PlacePinLocation = ({double lat, double lng});
-
 class PlacePinService {
-  Future<PlacePinLocation> getCurrentLocation() async {
+  Future<({double lat, double lng})> getCurrentLocation() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw PlacePinLocationFailed('Location services are off');
     }
-
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+    var perm = await Geolocator.checkPermission();
+    if (perm == LocationPermission.denied) {
+      perm = await Geolocator.requestPermission();
     }
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
+    if (perm == LocationPermission.denied ||
+        perm == LocationPermission.deniedForever) {
       throw PlacePinLocationDenied();
     }
-
     try {
-      final position = await Geolocator.getCurrentPosition(
+      final pos = await Geolocator.getCurrentPosition(
         locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.high,
         ),
       );
-      return (lat: position.latitude, lng: position.longitude);
+      return (lat: pos.latitude, lng: pos.longitude);
     } catch (e) {
       throw PlacePinLocationFailed(e.toString());
     }
