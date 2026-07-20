@@ -11,24 +11,26 @@ class DailyLogsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daily Logs')),
+      appBar: AppBar(title: const Text('DAILY LOGS')),
       body: Consumer<LogProvider>(
         builder: (context, provider, _) {
           final logs = provider.dailyLogs;
           if (logs.isEmpty) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.directions_car_outlined,
-                      size: 64, color: AppTheme.mediumText.withValues(alpha: 0.4)),
-                  const SizedBox(height: 16),
-                  const Text('No daily entries yet',
-                      style: TextStyle(color: AppTheme.mediumText, fontSize: 16)),
-                  const SizedBox(height: 8),
-                  const Text('Tap + to add your first trip',
-                      style: TextStyle(color: AppTheme.mediumText, fontSize: 13)),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.directions_car_outlined,
+                        size: 56, color: AppTheme.tickDim),
+                    const SizedBox(height: 16),
+                    Text('NO ENTRIES', style: AppTheme.bigLabel),
+                    const SizedBox(height: 6),
+                    Text('Tap the + button to log your first trip.',
+                        textAlign: TextAlign.center, style: AppTheme.caption),
+                  ],
+                ),
               ),
             );
           }
@@ -37,112 +39,74 @@ class DailyLogsScreen extends StatelessWidget {
             itemCount: logs.length,
             itemBuilder: (context, index) {
               final log = logs[index];
-              final dateStr = DateFormat('MMM d, yyyy').format(log.date);
+              final dateStr = DateFormat('EEE · MMM d').format(log.date).toUpperCase();
               final dayName = DateFormat('EEEE').format(log.date);
+              final isToday = log.date.year == DateTime.now().year &&
+                  log.date.month == DateTime.now().month &&
+                  log.date.day == DateTime.now().day;
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => DailyLogFormScreen(existingLog: log),
+                padding: const EdgeInsets.only(bottom: 6),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => DailyLogFormScreen(existingLog: log)),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+                    decoration: BoxDecoration(
+                      color: AppTheme.bezel,
+                      border: Border(
+                        left: BorderSide(
+                          color: isToday ? AppTheme.accent : AppTheme.bezelEdge,
+                          width: 3,
+                        ),
+                        top: BorderSide(color: AppTheme.bezelEdge),
+                        bottom: BorderSide(color: AppTheme.bezelEdge),
+                        right: BorderSide(color: AppTheme.bezelEdge),
                       ),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border(
-                          left: BorderSide(
-                            color: AppTheme.primaryLight.withValues(alpha: 0.3),
-                            width: 4,
-                          ),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(log.date.day.toString().padLeft(2, '0'),
+                                style: AppTheme.bigNumber.copyWith(color: isToday ? AppTheme.accentBright : AppTheme.displayBright)),
+                            Text(DateFormat('MMM').format(log.date).toUpperCase(),
+                                style: AppTheme.sectionLabel),
+                          ],
                         ),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryLight.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Center(
-                              child: Text(
-                                log.date.day.toString(),
-                                style: const TextStyle(
-                                  color: AppTheme.primary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  dateStr,
-                                  style: const TextStyle(
-                                    color: AppTheme.darkText,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '$dayName  |  ${log.startKm.toStringAsFixed(0)} \u2192 ${log.endKm.toStringAsFixed(0)} KM',
-                                  style: const TextStyle(
-                                    color: AppTheme.mediumText,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                        Container(
+                          width: 1,
+                          height: 36,
+                          margin: const EdgeInsets.symmetric(horizontal: 14),
+                          color: AppTheme.bezelEdge,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.accent.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  '${log.totalKm.toStringAsFixed(0)} KM',
-                                  style: const TextStyle(
-                                    color: AppTheme.accent,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
+                              Text(dateStr, style: AppTheme.bigLabel),
                               const SizedBox(height: 4),
                               Text(
-                                '${log.cost.toStringAsFixed(0)} AED',
-                                style: const TextStyle(
-                                  color: AppTheme.darkText,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                '$dayName  ·  ${log.startKm.toStringAsFixed(0)} → ${log.endKm.toStringAsFixed(0)}',
+                                style: AppTheme.caption,
                               ),
                             ],
                           ),
-                          const SizedBox(width: 4),
-                          Icon(Icons.chevron_right,
-                              color: AppTheme.mediumText.withValues(alpha: 0.5),
-                              size: 18),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(log.totalKm.toStringAsFixed(0),
+                                style: AppTheme.bigNumber.copyWith(color: AppTheme.accentBright, fontSize: 22)),
+                            Text('KM', style: AppTheme.sectionLabel),
+                            const SizedBox(height: 4),
+                            Text('${log.cost.toStringAsFixed(0)} AED', style: AppTheme.caption),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -152,7 +116,7 @@ class DailyLogsScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Color(0xFF1A0F00)),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const DailyLogFormScreen()),

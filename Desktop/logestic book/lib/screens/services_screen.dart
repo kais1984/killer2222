@@ -12,24 +12,25 @@ class ServicesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Services')),
+      appBar: AppBar(title: const Text('SERVICES')),
       body: Consumer<LogProvider>(
         builder: (context, provider, _) {
           final services = provider.services;
           if (services.isEmpty) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.build_outlined,
-                      size: 64, color: AppTheme.mediumText.withValues(alpha: 0.4)),
-                  const SizedBox(height: 16),
-                  const Text('No services recorded yet',
-                      style: TextStyle(color: AppTheme.mediumText, fontSize: 16)),
-                  const SizedBox(height: 8),
-                  const Text('Tap + to add a service record',
-                      style: TextStyle(color: AppTheme.mediumText, fontSize: 13)),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.build_outlined, size: 56, color: AppTheme.tickDim),
+                    const SizedBox(height: 16),
+                    Text('NO SERVICES', style: AppTheme.bigLabel),
+                    const SizedBox(height: 6),
+                    Text('Tap the + button to log a service.',
+                        textAlign: TextAlign.center, style: AppTheme.caption),
+                  ],
+                ),
               ),
             );
           }
@@ -38,103 +39,62 @@ class ServicesScreen extends StatelessWidget {
             itemCount: services.length,
             itemBuilder: (context, index) {
               final svc = services[index];
-              final dateStr = DateFormat('MMM d, yyyy').format(svc.date);
+              final dateStr = DateFormat('EEE · MMM d').format(svc.date).toUpperCase();
               final typeColor = ServiceLog.colorFor(svc.serviceType);
               final typeIcon = ServiceLog.iconFor(svc.serviceType);
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            ServiceFormScreen(existingService: svc),
+                padding: const EdgeInsets.only(bottom: 6),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ServiceFormScreen(existingService: svc)),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: AppTheme.bezel,
+                      border: Border(
+                        left: BorderSide(color: typeColor, width: 3),
+                        top: BorderSide(color: AppTheme.bezelEdge),
+                        bottom: BorderSide(color: AppTheme.bezelEdge),
+                        right: BorderSide(color: AppTheme.bezelEdge),
                       ),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border(
-                          left: BorderSide(color: typeColor, width: 4),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: typeColor.withValues(alpha: 0.15),
+                            border: Border.all(color: typeColor.withValues(alpha: 0.4)),
+                          ),
+                          child: Icon(typeIcon, color: typeColor, size: 20),
                         ),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: typeColor.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(typeIcon, color: typeColor, size: 24),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  ServiceLog.displayName(svc.serviceType),
-                                  style: const TextStyle(
-                                    color: AppTheme.darkText,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  dateStr,
-                                  style: const TextStyle(
-                                    color: AppTheme.mediumText,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: typeColor.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  '${svc.kmReading.toStringAsFixed(0)} KM',
-                                  style: TextStyle(
-                                    color: typeColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
+                              Text(ServiceLog.displayName(svc.serviceType).toUpperCase(),
+                                  style: AppTheme.bigLabel),
                               const SizedBox(height: 4),
-                              Text(
-                                '${svc.cost.toStringAsFixed(0)} AED',
-                                style: const TextStyle(
-                                  color: AppTheme.darkText,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Text(dateStr, style: AppTheme.caption),
                             ],
                           ),
-                          const SizedBox(width: 4),
-                          Icon(Icons.chevron_right,
-                              color: AppTheme.mediumText.withValues(alpha: 0.5),
-                              size: 18),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(svc.kmReading.toStringAsFixed(0),
+                                style: AppTheme.bigNumber.copyWith(fontSize: 20)),
+                            Text('KM', style: AppTheme.sectionLabel),
+                            const SizedBox(height: 4),
+                            Text('${svc.cost.toStringAsFixed(0)} AED', style: AppTheme.caption),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -144,7 +104,7 @@ class ServicesScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Color(0xFF1A0F00)),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const ServiceFormScreen()),

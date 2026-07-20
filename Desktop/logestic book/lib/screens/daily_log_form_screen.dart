@@ -80,7 +80,7 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Edit Daily Entry' : 'New Daily Entry'),
+        title: const Text('DAILY ENTRY'),
         actions: _isEditing
             ? [
                 IconButton(
@@ -94,43 +94,32 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
           children: [
             _buildDatePicker(context),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             _buildKmSection(totalKm),
-            const SizedBox(height: 16),
-            _buildTextField(
-              controller: _costCtrl,
-              label: 'Cost (AED)',
-              icon: Icons.monetization_on,
-              keyboardType: TextInputType.number,
-              validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            _buildCostField(),
+            const SizedBox(height: 12),
             PinnedPlacesCard(
               pins: _pins,
               onChanged: (newPins) => setState(() => _pins = newPins),
             ),
-            const SizedBox(height: 16),
-            _buildTextField(
-              controller: _notesCtrl,
-              label: 'Notes',
-              icon: Icons.notes,
-              maxLines: 3,
-            ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 12),
+            _buildNotesField(),
+            const SizedBox(height: 28),
             SizedBox(
-              height: 52,
+              height: 56,
               child: ElevatedButton(
                 onPressed: _save,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.accent,
+                  foregroundColor: const Color(0xFF1A0F00),
                 ),
                 child: Text(
-                  _isEditing ? 'Update Entry' : 'Save Entry',
-                  style: const TextStyle(fontSize: 16),
+                  _isEditing ? 'UPDATE ENTRY' : 'SAVE ENTRY',
+                  style: AppTheme.bigLabel.copyWith(color: const Color(0xFF1A0F00)),
                 ),
               ),
             ),
@@ -143,46 +132,24 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
   Widget _buildDatePicker(BuildContext context) {
     return InkWell(
       onTap: _pickDate,
-      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          color: AppTheme.bezel,
+          border: Border.all(color: AppTheme.bezelEdge),
         ),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryLight.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.calendar_today,
-                  color: AppTheme.primaryLight, size: 20),
-            ),
-            const SizedBox(width: 14),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Date',
-                    style: TextStyle(
-                        color: AppTheme.mediumText, fontSize: 12)),
-                const SizedBox(height: 2),
-                Text(
-                  DateFormat('EEEE, MMMM d, yyyy').format(_selectedDate),
-                  style: const TextStyle(
-                    color: AppTheme.darkText,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+            Container(width: 4, height: 4, color: AppTheme.accent),
+            const SizedBox(width: 10),
+            Text('DATE', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+            const SizedBox(width: 12),
+            Text(
+              DateFormat('EEE · MMM d, yyyy').format(_selectedDate).toUpperCase(),
+              style: AppTheme.bigLabel,
             ),
             const Spacer(),
-            const Icon(Icons.edit_calendar,
-                color: AppTheme.mediumText, size: 20),
+            Icon(Icons.edit_calendar, color: AppTheme.displayDim, size: 18),
           ],
         ),
       ),
@@ -191,63 +158,74 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
 
   Widget _buildKmSection(double totalKm) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        color: AppTheme.bezel,
+        border: Border.all(color: AppTheme.bezelEdge),
       ),
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('ODOMETER', style: AppTheme.sectionLabel),
+              if (_showsAutoFillBadge())
+                Row(
+                  children: [
+                    Icon(Icons.auto_fix_high, color: AppTheme.primaryLight, size: 14),
+                    const SizedBox(width: 4),
+                    Text('AUTO-FILLED', style: AppTheme.sectionLabel.copyWith(color: AppTheme.primaryLight)),
+                  ],
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: _buildTextField(
+                child: _OdoField(
                   controller: _startKmCtrl,
-                  label: 'Start KM',
-                  icon: Icons.trip_origin,
-                  keyboardType: TextInputType.number,
-                  validator: (v) =>
-                      v == null || v.isEmpty ? 'Required' : null,
-                  helperText: (_autoFilledKm == null && _startKmCtrl.text.isEmpty)
-                      ? 'No previous entry — enter the start odometer manually'
-                      : null,
-                  suffixIcon: _showsAutoFillBadge()
-                      ? const Icon(Icons.auto_fix_high,
-                          size: 18, color: AppTheme.primaryLight)
-                      : null,
+                  label: 'START',
+                  onChanged: (_) => setState(() {}),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
+              Icon(Icons.arrow_forward, color: AppTheme.displayDim, size: 18),
+              const SizedBox(width: 10),
               Expanded(
-                child: _buildTextField(
+                child: _OdoField(
                   controller: _endKmCtrl,
-                  label: 'End KM',
-                  icon: Icons.location_on,
-                  keyboardType: TextInputType.number,
-                  validator: (v) =>
-                      v == null || v.isEmpty ? 'Required' : null,
+                  label: 'END',
+                  onChanged: (_) => setState(() {}),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          if (_autoFilledKm == null && _startKmCtrl.text.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                'No previous entry — enter the start odometer manually',
+                style: AppTheme.caption,
+              ),
+            ),
+          const SizedBox(height: 16),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                  colors: AppTheme.accentGradient),
-              borderRadius: BorderRadius.circular(10),
+              color: const Color(0xFF0B1220),
+              border: Border.all(color: AppTheme.accent.withValues(alpha: 0.4)),
             ),
-            child: Text(
-              'Total: ${totalKm.toStringAsFixed(0)} KM',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('TOTAL  ', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+                Text(totalKm.toStringAsFixed(0),
+                    style: AppTheme.hugeNumber.copyWith(color: AppTheme.accentBright, fontSize: 32)),
+                Text('  KM', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+              ],
             ),
           ),
         ],
@@ -255,28 +233,79 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-    int maxLines = 1,
-    String? helperText,
-    Widget? suffixIcon,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        helperText: helperText,
-        suffixIcon: suffixIcon,
+  Widget _buildCostField() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      decoration: BoxDecoration(
+        color: AppTheme.bezel,
+        border: Border.all(color: AppTheme.bezelEdge),
       ),
-      keyboardType: keyboardType,
-      validator: validator,
-      maxLines: maxLines,
-      onChanged: (_) => setState(() {}),
+      child: Row(
+        children: [
+          Container(width: 4, height: 4, color: AppTheme.accent),
+          const SizedBox(width: 10),
+          Text('COST', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+          const SizedBox(width: 14),
+          Expanded(
+            child: TextFormField(
+              controller: _costCtrl,
+              keyboardType: TextInputType.number,
+              style: AppTheme.bigNumber,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                filled: false,
+                hintText: '0',
+                hintStyle: TextStyle(color: AppTheme.tickDim),
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
+              validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+              onChanged: (_) => setState(() {}),
+            ),
+          ),
+          Text('AED', style: AppTheme.sectionLabel),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotesField() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      decoration: BoxDecoration(
+        color: AppTheme.bezel,
+        border: Border.all(color: AppTheme.bezelEdge),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(width: 4, height: 4, color: AppTheme.displayDim),
+              const SizedBox(width: 10),
+              Text('NOTES', style: AppTheme.sectionLabel),
+            ],
+          ),
+          const SizedBox(height: 6),
+          TextFormField(
+            controller: _notesCtrl,
+            maxLines: 3,
+            style: AppTheme.bodyText,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: false,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+              hintText: 'Optional...',
+              hintStyle: TextStyle(color: AppTheme.tickDim),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -346,6 +375,48 @@ class _DailyLogFormScreenState extends State<DailyLogFormScreen> {
             },
             child:
                 const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Big monospaced odometer-style text field.
+class _OdoField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final ValueChanged<String>? onChanged;
+  const _OdoField({required this.controller, required this.label, this.onChanged});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0B1220),
+        border: Border.all(color: AppTheme.bezelEdge),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: AppTheme.sectionLabel),
+          const SizedBox(height: 2),
+          TextFormField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            style: AppTheme.hugeNumber.copyWith(fontSize: 28),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: false,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+              hintText: '000000',
+              hintStyle: TextStyle(color: AppTheme.tickDim, fontSize: 28),
+            ),
+            validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+            onChanged: onChanged,
           ),
         ],
       ),

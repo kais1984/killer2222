@@ -141,116 +141,22 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
       children: [
         Row(
           children: [
-            Expanded(
-                child: _buildStatCard(
-                    'Total KM', totalKm.toStringAsFixed(0),
-                    Icons.speed, AppTheme.primaryGradient)),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _buildStatCard(
-                    'Working Days', '${_dailyLogs.length}',
-                    Icons.calendar_month, AppTheme.secondaryGradient)),
+            Expanded(child: _StatBlock(label: 'TOTAL KM', value: totalKm.toStringAsFixed(0), accent: AppTheme.primaryLight)),
+            const SizedBox(width: 8),
+            Expanded(child: _StatBlock(label: 'WORKING DAYS', value: _dailyLogs.length.toString(), accent: AppTheme.secondary)),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Row(
           children: [
-            Expanded(
-                child: _buildStatCard(
-                    'Trip Costs', '${dailyCost.toStringAsFixed(0)} AED',
-                    Icons.directions_car, AppTheme.accentGradient)),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _buildStatCard(
-                    'Service Costs', '${svcCost.toStringAsFixed(0)} AED',
-                    Icons.build, AppTheme.secondaryGradient)),
+            Expanded(child: _StatBlock(label: 'TRIP COSTS', value: '${dailyCost.toStringAsFixed(0)} AED', accent: AppTheme.accentBright)),
+            const SizedBox(width: 8),
+            Expanded(child: _StatBlock(label: 'SERVICE COSTS', value: '${svcCost.toStringAsFixed(0)} AED', accent: AppTheme.accentBright)),
           ],
         ),
         const SizedBox(height: 12),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-                colors: AppTheme.primaryGradient,
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.primary.withValues(alpha: 0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Grand Total',
-                      style: TextStyle(
-                          color: Colors.white70, fontSize: 12)),
-                  SizedBox(height: 4),
-                  Text('All Costs Combined',
-                      style: TextStyle(
-                          color: Colors.white60, fontSize: 10)),
-                ],
-              ),
-              Text(
-                '${grandTotal.toStringAsFixed(0)} AED',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
-          ),
-        ),
+        _GrandTotalBlock(amount: '${grandTotal.toStringAsFixed(0)} AED'),
       ],
-    );
-  }
-
-  Widget _buildStatCard(
-      String label, String value, IconData icon, List<Color> gradient) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(colors: gradient),
-        boxShadow: [
-          BoxShadow(
-            color: gradient.first.withValues(alpha: 0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(label,
-                  style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500)),
-              Icon(icon, color: Colors.white60, size: 16),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(value,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800)),
-        ],
-      ),
     );
   }
 
@@ -258,17 +164,8 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title,
-            style: const TextStyle(
-              color: AppTheme.darkText,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            )),
-        Text(subtitle,
-            style: const TextStyle(
-              color: AppTheme.mediumText,
-              fontSize: 13,
-            )),
+        Text(title, style: AppTheme.sectionLabel),
+        Text(subtitle, style: AppTheme.caption),
       ],
     );
   }
@@ -280,62 +177,43 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
       child: Text(
         message,
         textAlign: TextAlign.center,
-        style: TextStyle(
-            color: AppTheme.mediumText.withValues(alpha: 0.6),
-            fontSize: 14),
+        style: AppTheme.caption,
       ),
     );
   }
 
   Widget _buildDailyRow(DailyLog log) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.bezel,
+        border: Border(
+          top: BorderSide(color: AppTheme.bezelEdge),
+          bottom: BorderSide(color: AppTheme.bezelEdge),
+        ),
       ),
       child: Row(
         children: [
           Text(
-            DateFormat('MMM d').format(log.date),
-            style: const TextStyle(
-              color: AppTheme.darkText,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
-            ),
+            DateFormat('MMM d').format(log.date).toUpperCase(),
+            style: AppTheme.smallNumber.copyWith(color: AppTheme.displayDim, fontSize: 11),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               '${log.startKm.toStringAsFixed(0)} \u2192 ${log.endKm.toStringAsFixed(0)}',
-              style: const TextStyle(
-                color: AppTheme.mediumText,
-                fontSize: 13,
-              ),
+              style: AppTheme.smallNumber,
             ),
           ),
           Text(
             '${log.totalKm.toStringAsFixed(0)} KM',
-            style: const TextStyle(
-              color: AppTheme.accent,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppTheme.smallNumber.copyWith(color: AppTheme.accentBright),
           ),
           const SizedBox(width: 12),
-          SizedBox(
-            width: 70,
-            child: Text(
-              '${log.cost.toStringAsFixed(0)} AED',
-              textAlign: TextAlign.right,
-              style: const TextStyle(
-                color: AppTheme.darkText,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+          Text(
+            log.cost.toStringAsFixed(0),
+            style: AppTheme.smallNumber,
           ),
         ],
       ),
@@ -344,40 +222,95 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
 
   Widget _buildServiceRow(ServiceLog svc) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.bezel,
+        border: Border(
+          top: BorderSide(color: AppTheme.bezelEdge),
+          bottom: BorderSide(color: AppTheme.bezelEdge),
+        ),
       ),
       child: Row(
         children: [
           Text(
-            DateFormat('MMM d').format(svc.date),
-            style: const TextStyle(
-              color: AppTheme.darkText,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            DateFormat('MMM d').format(svc.date).toUpperCase(),
+            style: AppTheme.smallNumber.copyWith(color: AppTheme.displayDim, fontSize: 11),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               ServiceLog.displayName(svc.serviceType),
-              style: const TextStyle(
-                color: AppTheme.mediumText,
-                fontSize: 13,
-              ),
+              style: AppTheme.smallNumber,
             ),
           ),
           Text(
             '${svc.cost.toStringAsFixed(0)} AED',
-            style: const TextStyle(
-              color: AppTheme.darkText,
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTheme.smallNumber,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatBlock extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color accent;
+  const _StatBlock({required this.label, required this.value, required this.accent});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
+      decoration: BoxDecoration(
+        color: AppTheme.bezel,
+        border: Border.all(color: AppTheme.bezelEdge),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(width: 4, height: 4, color: accent),
+              const SizedBox(width: 8),
+              Text(label, style: AppTheme.sectionLabel.copyWith(color: accent)),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(value, style: AppTheme.bigNumber.copyWith(color: AppTheme.displayBright)),
+        ],
+      ),
+    );
+  }
+}
+
+class _GrandTotalBlock extends StatelessWidget {
+  final String amount;
+  const _GrandTotalBlock({required this.amount});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0B1220),
+        border: Border.all(color: AppTheme.accent),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(width: 4, height: 4, color: AppTheme.accent),
+              const SizedBox(width: 8),
+              Text('GRAND TOTAL', style: AppTheme.sectionLabel.copyWith(color: AppTheme.accent)),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(amount, style: AppTheme.hugeNumber.copyWith(color: AppTheme.accentBright)),
+          const SizedBox(height: 2),
+          Text('ALL COSTS COMBINED', style: AppTheme.sectionLabel),
         ],
       ),
     );
